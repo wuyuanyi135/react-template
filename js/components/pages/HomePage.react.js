@@ -7,6 +7,7 @@ import { asyncChangeProjectName, asyncChangeOwnerName } from '../../actions/AppA
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import { Alert } from 'react-bootstrap';
 
 class HomePage extends Component {
   render() {
@@ -23,6 +24,10 @@ class HomePage extends Component {
           <input className="home__input" type="text" onChange={(evt) => { dispatch(asyncChangeOwnerName(evt.target.value)); }} defaultValue="mxstbr" value={ownerName} />
         </label>
         <Link className="btn" to="/readme">Setup</Link>
+        
+        <Alert bsStyle="danger">
+          <h4>Oh snap! You got an error!</h4>
+        </Alert>
       </div>
     );
   }

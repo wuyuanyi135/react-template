@@ -15,7 +15,7 @@ module.exports = function(options) {
     ];
     cssLoaders = ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader');
     // Plugins
-    plugins = [// Plugins for Webpack
+    plugins = [ // Plugins for Webpack
       new webpack.optimize.UglifyJsPlugin({ // Optimize the JavaScript...
         compress: {
           warnings: false // ...but do not show warnings in the console (there is a lot of them)
@@ -45,8 +45,9 @@ module.exports = function(options) {
       })
     ];
 
-  // If app is in development
-  } else {
+    // If app is in development
+  }
+  else {
     // Entry
     entry = [
       "webpack-dev-server/client?http://0.0.0.0:8080", // Needed for hot reloading
@@ -76,26 +77,34 @@ module.exports = function(options) {
     },
     module: {
       loaders: [{
-          test: /\.js$/, // Transform all .js files required somewhere within an entry point...
-          loader: 'babel', // ...with the specified loaders...
-          exclude: path.join(__dirname, '/node_modules/') // ...except for the node_modules folder.
-        }, {
-          test:   /\.css$/, // Transform all .css files required somewhere within an entry point...
-          loader: cssLoaders // ...with PostCSS
-        }, {
-          test: /\.jpe?g$|\.gif$|\.png$/i,
-          loader: "url-loader?limit=10000"
-        }
-      ]
+        test: /\.js$/, // Transform all .js files required somewhere within an entry point...
+        loader: 'babel', // ...with the specified loaders...
+        exclude: path.join(__dirname, '/node_modules/') // ...except for the node_modules folder.
+      }, {
+        test: /\.css$/, // Transform all .css files required somewhere within an entry point...
+        loader: cssLoaders // ...with PostCSS
+      }, {
+        test: /\.jpe?g$|\.gif$|\.png$/i,
+        loader: "url-loader?limit=10000"
+      }, {
+        test: /\.woff$/,
+        loader: "url-loader?limit=10000&mimetype=application/font-woff&name=[path][name].[ext]"
+      }, {
+        test: /\.woff2$/,
+        loader: "url-loader?limit=10000&mimetype=application/font-woff2&name=[path][name].[ext]"
+      }, {
+        test: /\.(eot|ttf|svg|gif|png)$/,
+        loader: "file-loader"
+      }]
     },
     plugins: plugins,
     postcss: function() {
       return [
         require('postcss-import')({ // Import all the css files...
           glob: true,
-          onImport: function (files) {
+          onImport: function(files) {
               files.forEach(this.addDependency); // ...and add dependecies from the main.css files to the other css files...
-          }.bind(this) // ...so they get hot–reloaded when something changes...
+            }.bind(this) // ...so they get hot–reloaded when something changes...
         }),
         require('postcss-simple-vars')(), // ...then replace the variables...
         require('postcss-focus')(), // ...add a :focus to ever :hover...
