@@ -1,7 +1,7 @@
 {
-  "name": "reactjs-boilerplate",
-  "version": "2.4.0",
-  "description": "Quick setup for new React.js applications featuring Redux, hot–reloading, PostCSS, react-router and Mocha.",
+  "name": "react-client",
+  "version": "0.0.1",
+  "description": "",
   "dependencies": {
     "fontfaceobserver": "^1.5.1",
     "history": "1.17.0",
@@ -39,6 +39,7 @@
     "html-webpack-plugin": "^1.6.1",
     "ip": "1.1.0",
     "json-loader": "^0.5.2",
+    "jsx-loader": "^0.13.2",
     "mocha": "^2.3.2",
     "object.assign": "^4.0.1",
     "postcss-focus": "^1.0.0",
@@ -61,7 +62,7 @@
     "test": "mocha --compilers js:babel-core/register --recursive",
     "test:watch": "npm test -- --watch",
     "start": "cross-env NODE_ENV=development node server.dev.js",
-    "build": "npm run test && cross-env NODE_ENV=production webpack --config webpack.prod.config.js --progress --colors -p",
+    "build": "cross-env NODE_ENV=production webpack --config webpack.prod.config.js --progress --colors -p",
     "serve": "cross-env NODE_ENV=production node server.prod.js"
   },
   "author": "Max Stoiber",

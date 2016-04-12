@@ -19,7 +19,7 @@ class HomePage extends Component {
         <label className="home__label">Change to your project name:
           <input className="home__input" type="text" onChange={(evt) => { dispatch(asyncChangeProjectName(evt.target.value)); }} defaultValue="React.js Boilerplate" value={projectName} />
         </label>
-        <label className="home__label">Change to your name:
+        <label className="home__label">Change to your nadme:
           <input className="home__input" type="text" onChange={(evt) => { dispatch(asyncChangeOwnerName(evt.target.value)); }} defaultValue="mxstbr" value={ownerName} />
         </label>
         <Link className="btn" to="/readme">Setup</Link>
