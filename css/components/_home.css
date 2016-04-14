@@ -3,26 +3,15 @@
 	color: #222222;
 	max-width: 978px;
 	margin: 0 auto;
+	padding-left: 15px;
+	padding-right: 15px;
 }
 
-.home__wrapper a {
-	color: #222222;
+
+.subTitle {
+	
 }
 
-.home__wrapper h1,
-.home__wrapper h2 {
-	text-align: center;
-}
-
-.btn {
-	display: inline-block;
-	background-color: skyblue;
-	padding: 0.5em;
-	color: #FEFEFE;
-	border-radius: 3px;
-	text-decoration: none;
-	font-family: cursive;
-}
 
 .logo {
 	max-height: 5em;
