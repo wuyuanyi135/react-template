@@ -10,7 +10,7 @@ new WebpackDevServer(webpack(config), { // Start a server
   hot: true, // With hot reloading
   inline: false,
   historyApiFallback: true,
-  quiet: true // Without logging
+  quiet: false // Without logging
 }).listen(config.port, '0.0.0.0', function (err, result) {
   if (err) {
     console.log(err);

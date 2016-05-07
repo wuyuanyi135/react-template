@@ -13,26 +13,29 @@ import 'file?name=[name].[ext]!../serviceworker.js';
 import 'file?name=[name].[ext]!../manifest.json';
 import 'file?name=[name].[ext]!../.htaccess';
 
-// Check for ServiceWorker support before trying to install it
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/serviceworker.js').then(() => {
-    // Registration was successful
-  }).catch(() => {
-    // Registration failed
-  });
-} else {
-  // No ServiceWorker Support
-}
+// // Check for ServiceWorker support before trying to install it
+// if ('serviceWorker' in navigator) {
+//   navigator.serviceWorker.register('/serviceworker.js').then(() => {
+//     // Registration was successful
+//   }).catch(() => {
+//     // Registration failed
+//   });
+// } else {
+//   // No ServiceWorker Support
+// }
 
 // Import all the third party stuff
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, Route } from 'react-router';
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 import thunk from 'redux-thunk';
 import FontFaceObserver from 'fontfaceobserver';
 import createHistory from 'history/lib/createBrowserHistory';
+const browserHistory = createHistory();
+
+import { syncHistoryWithStore, routerReducer, routerMiddleware } from 'react-router-redux';
 
 // Observer loading of Open Sans (to remove open sans, remove the <link> tag in the index.html file and this observer)
 const openSansObserver = new FontFaceObserver('Open Sans', {});
@@ -48,6 +51,7 @@ openSansObserver.check().then(() => {
 import HomePage from './components/pages/HomePage.react';
 import ReadmePage from './components/pages/ReadmePage.react';
 import NotFoundPage from './components/pages/NotFound.react';
+import ImportPage from './components/pages/ImportPage.react';
 import App from './components/App.react';
 
 // Import the CSS file, which HtmlWebpackPlugin transfers to the build folder
@@ -56,25 +60,49 @@ import '../css/main.css';
 // Create the store with the redux-thunk middleware, which allows us
 // to do asynchronous things in the actions
 import rootReducer from './reducers/rootReducer';
-const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
-const store = createStoreWithMiddleware(rootReducer);
+
+// @Deprecated: use compose to assemble middlewares
+// const createStoreWithMiddleware = applyMiddleware(
+//   thunk, 
+//   routerMiddleware(browserHistory)
+// )(createStore);
+
+const store = createStore(
+    combineReducers({
+    ...rootReducer,
+    routing: routerReducer
+  }),
+  compose(
+    applyMiddleware(thunk),
+    applyMiddleware(routerMiddleware(browserHistory)),
+    window.devToolsExtension ? window.devToolsExtension() : f => f
+    )
+);
 
 // Make reducers hot reloadable, see http://stackoverflow.com/questions/34243684/make-redux-reducers-and-other-non-components-hot-loadable
 if (module.hot) {
-  module.hot.accept('./reducers/rootReducer', () => {
-    const nextRootReducer = require('./reducers/rootReducer').default;
-    store.replaceReducer(nextRootReducer);
+    module.hot.accept('./reducers/rootReducer', () => {
+      const nextRootReducer = require('./reducers/rootReducer').default;
+      store.replaceReducer(combineReducers({
+        ...nextRootReducer,
+        routing: routerReducer
+      })
+    );
   });
 }
+
+
+const history = syncHistoryWithStore(browserHistory, store);
 
 // Mostly boilerplate, except for the Routes. These are the pages you can go to,
 // which are all wrapped in the App component, which contains the navigation etc
 ReactDOM.render(
   <Provider store={store}>
-    <Router history={createHistory()}>
+    <Router history={history}>
       <Route component={App}>
         <Route path="/" component={HomePage} />
         <Route path="/readme" component={ReadmePage} />
+        <Route path="/import" component={ImportPage} />
         <Route path="*" component={NotFoundPage} />
       </Route>
     </Router>

@@ -4,7 +4,7 @@
  */
 
 import {
-  asyncChangeProjectName, asyncChangeOwnerName
+  changeTest
 }
 from '../../actions/AppActions';
 import React, {
@@ -24,9 +24,14 @@ import {
 }
 from 'react-bootstrap';
 
+import {
+  push
+} 
+from 'react-router-redux';
+
 class HomePage extends Component {
-  handleClick() {
-    console.log("TtT");
+  handleClick = (e) => {
+    this.props.dispatch(changeTest("fappppd"));
   }
 
   render() {
@@ -47,13 +52,13 @@ class HomePage extends Component {
             
             <tr>
               <td>hello</td>
-              <td>world</td>
+              <td>{this.props.data.test}</td>
             </tr>
           </tbody>
         </table>
         <Alert bsStyle="danger">
           <h4>Oh snap! You got an error!!!!</h4>
-          <Button bsStyle="warning" onClick={this.handleClick}>Cancel</Button>
+          <Button bsStyle="warning" onClick={() => this.props.dispatch(push('/import'))}>Cancel</Button>
         </Alert>
       </div>
     );
@@ -65,7 +70,7 @@ class HomePage extends Component {
 // Which props do we want to inject, given the global state?
 function select(state) {
   return {
-    data: state
+    data: state.homeReducer
   };
 }
 
