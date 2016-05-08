@@ -10,7 +10,12 @@ new WebpackDevServer(webpack(config), { // Start a server
   hot: true, // With hot reloading
   inline: false,
   historyApiFallback: true,
-  quiet: false // Without logging
+  quiet: false, // Without logging
+  proxy: {
+      '/api/*' : {
+          target: 'http://localhost:8081/'
+      }
+  }
 }).listen(config.port, '0.0.0.0', function (err, result) {
   if (err) {
     console.log(err);

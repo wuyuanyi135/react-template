@@ -32,7 +32,7 @@
     "babel-preset-stage-0": "^6.5.0",
     "babel-preset-stage-2": "^6.0.0",
     "cross-env": "1.0.6",
-    "css-loader": "^0.23.0",
+    "css-loader": "^0.23.1",
     "cssnano": "^3.0.1",
     "eslint": "^1.4.1",
     "eslint-config-airbnb": "1.0.0",
