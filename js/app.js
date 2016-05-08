@@ -28,7 +28,7 @@ import 'file?name=[name].[ext]!../.htaccess';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { Router, Route } from 'react-router';
+import { Router, Route, useRouterHistory } from 'react-router';
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 import thunk from 'redux-thunk';
 import FontFaceObserver from 'fontfaceobserver';
@@ -63,7 +63,7 @@ import rootReducer from './reducers/rootReducer';
 
 // @Deprecated: use compose to assemble middlewares
 // const createStoreWithMiddleware = applyMiddleware(
-//   thunk, 
+//   thunk,
 //   routerMiddleware(browserHistory)
 // )(createStore);
 
@@ -91,8 +91,8 @@ if (module.hot) {
   });
 }
 
-
-const history = syncHistoryWithStore(browserHistory, store);
+// useRouterHistory accomodate react-router 2.x
+const history = useRouterHistory( () => syncHistoryWithStore(browserHistory, store) )();
 
 // Mostly boilerplate, except for the Routes. These are the pages you can go to,
 // which are all wrapped in the App component, which contains the navigation etc

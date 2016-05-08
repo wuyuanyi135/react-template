@@ -3,31 +3,12 @@
  * This is the first thing users see of our App
  */
 
-import {
-  changeTest
-}
-from '../../actions/AppActions';
-import React, {
-  Component
-}
-from 'react';
-import {
-  connect
-}
-from 'react-redux';
-import {
-  Link
-}
-from 'react-router';
-import {
-  Alert, Button, Nav, NavItem, Navbar, NavDropdown, MenuItem
-}
-from 'react-bootstrap';
-
-import {
-  push
-} 
-from 'react-router-redux';
+import {changeTest} from '../../actions/AppActions';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {Link} from 'react-router';
+import {Alert, Button, Nav, NavItem, Navbar, NavDropdown, MenuItem} from 'react-bootstrap';
+import {push} from 'react-router-redux';
 
 class HomePage extends Component {
   handleClick = (e) => {
@@ -42,14 +23,14 @@ class HomePage extends Component {
     return (
       <div>
         <h1>Hello World!</h1>
-        
+
         <table className="table table-striped">
           <tbody>
             <tr>
               <td>hello</td>
               <td>world</td>
             </tr>
-            
+
             <tr>
               <td>hello</td>
               <td>{this.props.data.test}</td>
