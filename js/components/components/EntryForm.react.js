@@ -81,17 +81,17 @@ class EntryForm extends Component {
             case 'dateCreated':
                 var dt = state.dateCreated;
                 if (Object.keys(dt).length)
-                    return <HelpBlock>当前：{dt.Year}-{dt.Month}-{dt.Day}</HelpBlock>
+                    return <HelpBlock className="helpblock-blk">当前：{dt.Year}-{dt.Month}-{dt.Day}</HelpBlock>
                 break;
             case 'dateCompleted':
                 var dt = state.dateCompleted;
                 if (Object.keys(dt).length)
-                    return <HelpBlock>当前：{dt.Year}-{dt.Month}-{dt.Day}</HelpBlock>
+                    return <HelpBlock className="helpblock-blk">当前：{dt.Year}-{dt.Month}-{dt.Day}</HelpBlock>
                 break;
             case 'dateRevised':
                 var dt = state.dateRevised;
                 if (Object.keys(dt).length)
-                    return <HelpBlock>当前：{dt.Year}-{dt.Month}-{dt.Day}</HelpBlock>
+                    return <HelpBlock className="helpblock-blk">当前：{dt.Year}-{dt.Month}-{dt.Day}</HelpBlock>
                 break;
             default:
                 return null;
@@ -160,24 +160,26 @@ class EntryForm extends Component {
             </FormGroup>
             <FormGroup className="form-panel-content">
                 <ControlLabel>选择日期</ControlLabel>
-                <ButtonGroup className="form-btn-group">
-                   <Button
-                       id='btndateCreated'
-                       active={state.dateSelected == 'dateCreated'}
-                       onClick={(e)=>this.selectDate(e)}
-                       >创建日期</Button>
-                   <Button
-                       id='btndateCompleted'
-                       active={state.dateSelected == 'dateCompleted'}
-                       onClick={(e)=>this.selectDate(e)}
-                       >完成日期</Button>
-                   <Button
-                       id='btndateRevised'
-                       active={state.dateSelected == 'dateRevised'}
-                       onClick={(e)=>this.selectDate(e)}
-                       >修订日期</Button>
-               </ButtonGroup>
-                {this.getCurrentSelectedDate()}
+                <div>
+                    <ButtonGroup className="form-btn-group">
+                       <Button
+                           id='btndateCreated'
+                           active={state.dateSelected == 'dateCreated'}
+                           onClick={(e)=>this.selectDate(e)}
+                           >创建日期</Button>
+                       <Button
+                           id='btndateCompleted'
+                           active={state.dateSelected == 'dateCompleted'}
+                           onClick={(e)=>this.selectDate(e)}
+                           >完成日期</Button>
+                       <Button
+                           id='btndateRevised'
+                           active={state.dateSelected == 'dateRevised'}
+                           onClick={(e)=>this.selectDate(e)}
+                           >修订日期</Button>
+                   </ButtonGroup>
+                </div>
+                <div>{this.getCurrentSelectedDate()}</div>
             </FormGroup>
 
         </Panel>

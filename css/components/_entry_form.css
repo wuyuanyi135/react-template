@@ -8,4 +8,9 @@
 }
 
 .form-btn-group {
+    /*display: block;*/
+}
+
+.helpblock-blk {
+    display: block;
 }
