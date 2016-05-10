@@ -63,6 +63,18 @@ class EntryForm extends Component {
                 break;
         };
     }
+
+    handleAuthorChange(e,index,isAuthor) {
+        var authors = this.state.authors;
+        if (isAuthor) {
+            authors[index].name = e.target.value;
+        } else {
+            authors[index].collectiveName = e.target.value;
+        }
+
+        this.setState({authors});
+    }
+
     getCurrentSelectedDate() {
         var state = this.state;
         switch (state.dateSelected) {
@@ -84,6 +96,23 @@ class EntryForm extends Component {
             default:
                 return null;
         }
+    }
+
+    /**
+     * return string author list using the authors in state.
+     * @return {string} PubMed Author List.
+     */
+    getAuthorList() {
+        var ret = this.state.authors.reduce((previous, current) => {
+            if (current.collectiveName) {
+                return previous + ", " + current.collectiveName;
+            } else {
+                return previous + ", " + current.name;
+            }
+
+        },"");
+        // remove heading comma and space
+        return /, *(.*)$/.exec(ret)[1];
     }
 
     componentWillReceiveProps(nextProps) {
@@ -131,7 +160,7 @@ class EntryForm extends Component {
             </FormGroup>
             <FormGroup className="form-panel-content">
                 <ControlLabel>选择日期</ControlLabel>
-                <ButtonGroup block className="form-btn-group">
+                <ButtonGroup className="form-btn-group">
                    <Button
                        id='btndateCreated'
                        active={state.dateSelected == 'dateCreated'}
@@ -154,12 +183,42 @@ class EntryForm extends Component {
         </Panel>
         )
     }
+
+    authorPart() {
+        var authors = this.state.authors;
+        var el = authors.map((item,i) => {
+            var author = authors[i];
+            if (author.collectiveName) {
+                return (
+                    <div key={i}>
+                        <ControlLabel>作者/组织 #{i+1}</ControlLabel>
+                        <FormControl index={i} type="text" value={author.collectiveName} onChange={(e)=>this.handleAuthorChange(e,i,false)}></FormControl>
+                    </div>
+                );
+            } else {
+                return (
+                    <div key={i}>
+                        <ControlLabel>作者 #{i+1}</ControlLabel>
+                        <FormControl index={i} type="text" value={author.name} onChange={(e)=>this.handleAuthorChange(e,i,true)}></FormControl>
+                    </div>
+                );
+            }
+        });
+
+        return (
+            <Panel header="作者">
+                <FormGroup className="form-panel-content">{el}</FormGroup>
+                <HelpBlock>作者列表: {this.getAuthorList()}</HelpBlock>
+            </Panel>
+        );
+    }
     render() {
 
         return  (
             <form>
                 {this.pmidPart()}
                 {this.datePart()}
+                {this.authorPart()}
             </form>
         );
     }
