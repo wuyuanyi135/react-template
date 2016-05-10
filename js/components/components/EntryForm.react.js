@@ -81,6 +81,26 @@ class EntryForm extends Component {
                         {this.dateInputGroup(state.dateRevised, (v)=>this.setState({dateRevised: v}))}
                     </FormGroup>
                 </Panel>
+                <Panel header="日期">
+                    <FormGroup bsClass="form-panel-content">
+                        <ControlLabel>创建日期</ControlLabel>
+                        {this.dateInputGroup(state.dateCreated, (v)=>this.setState({dateCreated: v}))}
+                        <ControlLabel>完成日期</ControlLabel>
+                        {this.dateInputGroup(state.dateCompleted, (v)=>this.setState({dateCompleted: v}))}
+                        <ControlLabel>修订日期</ControlLabel>
+                        {this.dateInputGroup(state.dateRevised, (v)=>this.setState({dateRevised: v}))}
+                    </FormGroup>
+                </Panel>
+                <Panel header="日期">
+                    <FormGroup bsClass="form-panel-content">
+                        <ControlLabel>创建日期</ControlLabel>
+                        {this.dateInputGroup(state.dateCreated, (v)=>this.setState({dateCreated: v}))}
+                        <ControlLabel>完成日期</ControlLabel>
+                        {this.dateInputGroup(state.dateCompleted, (v)=>this.setState({dateCompleted: v}))}
+                        <ControlLabel>修订日期</ControlLabel>
+                        {this.dateInputGroup(state.dateRevised, (v)=>this.setState({dateRevised: v}))}
+                    </FormGroup>
+                </Panel>
 
             </form>
         );

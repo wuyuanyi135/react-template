@@ -21,7 +21,7 @@ class App extends Component {
     return (
       <div>
         <div className="header">
-          <AutoAffix container={this}>
+          <AutoAffix container={this} affixClassName="nav-affix">
             {this.getNavBar()}
           </AutoAffix>
         </div>

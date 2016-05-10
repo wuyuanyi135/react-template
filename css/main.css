@@ -14,7 +14,7 @@
 
 
 /* 4. Layout-related sections */
-/*@import 'layout/*.css';*/
+@import 'layout/_header.css';
 
 /* 5. Components */
 @import 'components/_home.css';
