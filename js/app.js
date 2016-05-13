@@ -35,7 +35,7 @@ import FontFaceObserver from 'fontfaceobserver';
 import createHistory from 'history/lib/createBrowserHistory';
 const browserHistory = createHistory();
 
-import { syncHistoryWithStore, routerReducer, routerMiddleware } from 'react-router-redux';
+import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux';
 
 // Observer loading of Open Sans (to remove open sans, remove the <link> tag in the index.html file and this observer)
 const openSansObserver = new FontFaceObserver('Open Sans', {});
@@ -68,10 +68,7 @@ import rootReducer from './reducers/rootReducer';
 // )(createStore);
 
 const store = createStore(
-    combineReducers({
-    ...rootReducer,
-    routing: routerReducer
-  }),
+  rootReducer,
   compose(
     applyMiddleware(thunk),
     applyMiddleware(routerMiddleware(browserHistory)),
@@ -83,11 +80,7 @@ const store = createStore(
 if (module.hot) {
     module.hot.accept('./reducers/rootReducer', () => {
       const nextRootReducer = require('./reducers/rootReducer').default;
-      store.replaceReducer(combineReducers({
-        ...nextRootReducer,
-        routing: routerReducer
-      })
-    );
+      store.replaceReducer(nextRootReducer);
   });
 }
 
