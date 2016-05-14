@@ -15,12 +15,13 @@
 
 import * as constants from '../constants/AppConstants';
 import assignToEmpty from '../utils/assign';
+import {OrderedSet} from 'immutable';
 
 const initialState = {
   projectName: 'React.js Boilerplate',
   ownerName: 'mxstbr',
   test: "yes, I am a test?",
-  importForm: {}
+  notifications: OrderedSet()
 };
 
 function homeReducer(state = initialState, action) {
@@ -38,6 +39,16 @@ function homeReducer(state = initialState, action) {
       return assignToEmpty(state, {
         projectName: action.name
       });
+    case constants.ADD_NOTIFICATION:
+        return assignToEmpty(state, {
+            notifications: state.notifications.add(action.notification)
+        });
+        break;
+    case constants.REMOVE_NOTIFICATION:
+        return assignToEmpty(state, {
+            notifications: state.notifications.delete(action.notification)
+        });
+        break;
     default:
       return state;
   }

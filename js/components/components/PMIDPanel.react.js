@@ -8,8 +8,8 @@
 import * as actions from '../../actions/AppActions';
 import {connect} from 'react-redux';
 import React, {Component} from 'react';
-import {Button, FormControl, ControlLabel, FormGroup, HelpBlock, Panel} from 'react-bootstrap';
-
+import {Button, FormControl, ControlLabel, FormGroup, HelpBlock, Panel, Glyphicon, InputGroup} from 'react-bootstrap';
+import {PulseLoader} from 'halogen';
 
 class PMIDPanel extends Component {
     constructor(){
@@ -17,16 +17,49 @@ class PMIDPanel extends Component {
         this.state = {};
     }
     componentDidMount () {
-        setInterval(()=>{
-            this.props.dispatch(actions.setImportFormState({pmid: Math.random()}));
-        },1000)
+
     }
     render() {
+        var props = this.props;
+        var pmid = props.pmid;
+        var isLoading = props.isLoading;
+        var dispatch = this.props.dispatch;
         return (
             <Panel header="PMID" className="pmid-panel form-panel">
-                <FormGroup>
+                <FormGroup className="form-panel-content">
                     <ControlLabel>PMID</ControlLabel>
-                    <FormControl type="text" name="pmid" value={this.props.pmid}/>
+                    <InputGroup>
+                        <FormGroup>
+                            <FormControl
+                                type="number"
+                                name="pmid"
+                                placeholder="PMID"
+                                value={pmid}
+                                onChange={e => dispatch(actions.setImportFormPMID(e.target.value))}/>
+                                {
+                                    isLoading? (
+                                        <FormControl.Feedback>
+                                            <div className="form-loader-container">
+                                                <PulseLoader size="10px" color="#bbb"/>
+                                            </div>
+                                        </FormControl.Feedback>
+                                    ): null
+                                }
+                        </FormGroup>
+
+                        <InputGroup.Button>
+                            <Button
+                                disabled={isLoading}
+                                onClick={()=>dispatch(actions.updateImportFormAsync(pmid))}>{isLoading?"正在获取":"在线获取"}</Button>
+                        </InputGroup.Button>
+                    </InputGroup>
+
+                        {pmid ?
+                            (<p>
+                                前往链接 <Glyphicon glyph="globe"/> <a target="_blank" href={"http://www.ncbi.nlm.nih.gov/pubmed/?term=" + pmid}>
+                                {"http://www.ncbi.nlm.nih.gov/pubmed/?term=" + pmid }
+                                </a>
+                            </p>) : null}
                 </FormGroup>
             </Panel>
         );
@@ -34,13 +67,13 @@ class PMIDPanel extends Component {
 }
 
 PMIDPanel.propTypes = {
-    pmid: React.PropTypes.number
-} 
-
-function select (state) {
-    console.log(state);
-    return {pmid:state.importForm.pmid}    
+    pmid: React.PropTypes.string
 }
 
+function select (state) {
+    return {
+        pmid:state.importForm.data.pmid,
+        isLoading: state.importForm.isLoading
+    }
+}
 module.exports = connect(select) (PMIDPanel);
-

@@ -8,11 +8,13 @@ class EntryForm extends Component {
     }
 
     render() {
-
+        var notifications = this.props.notifications;
         return  (
-            <form>
-                <PMIDPanel/>
-            </form>
+            <div>
+                <form>
+                    <PMIDPanel/>
+                </form>
+            </div>
         );
     }
 }

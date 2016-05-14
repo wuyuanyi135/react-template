@@ -28,6 +28,8 @@
 /* eslint-disable no-use-before-define */
 
 import * as constants from '../constants/AppConstants';
+import reqwest from 'reqwest';
+
 export function asyncChangeProjectName(name) {
   return (dispatch) => {
     // You can do async stuff here!
@@ -58,6 +60,86 @@ export function changeTest(message) {
   return { type: constants.CHANGE_TEST, message}
 }
 
+/* Entry form actions */
+
+export function updateImportFormAsync(pmid) {
+    return (dispatch) => {
+        if (!pmid) {
+            dispatch(addWarningNotification("未填写PMID",5000));
+            return;
+        }
+        /* set isLoading = true */
+        dispatch(setImportFormLoadingState(true));
+        reqwest(`/api/query/pmid/${pmid}`)
+            .then((resp) => {
+                dispatch(addDefaultNotification("加载成功！",4000));
+                dispatch(setImportFormState({data:resp}));  // TODO: potential break when backend key changes.
+
+            })
+            .fail((err) => {
+                dispatch(addWarningNotification("加载失败： " + err.statusText, 5000));  //todo: backend server should use statusText for consistency!
+            })
+            .always(() => {
+                dispatch(setImportFormLoadingState(false));
+            });
+    }
+}
+/**
+ * set all state of importForm
+ * @method setImportFormState
+ * @param  {object}           state     object contains newState
+ */
 export function setImportFormState(state) {
   return { type: constants.SET_IMPORT_FORM_STATE, newState:state };
+}
+
+export function setImportFormPMID(pmid) {
+    return { type: constants.CHANGE_IMPORT_FORM_PMID, pmid:pmid};
+}
+
+/**
+ * set the loading state of import form
+ * @method setImportFormLoadingState
+ * @param  {bool}                  state set the state to `state`
+ */
+export function setImportFormLoadingState(state) {
+    return { type: constants.CHANGE_IMPORT_FORM_LOADING_STATE, isLoading:state};
+}
+
+
+/**
+ * Notification Actions
+ */
+
+export function addNotification(notification) {
+    return { type: constants.ADD_NOTIFICATION, notification};
+}
+
+export function removeNotification(notification) {
+    return { type: constants.REMOVE_NOTIFICATION, notification};
+}
+
+
+/* Helpers */
+export function addDefaultNotification(message, timeout) {
+    return addNotification({
+            message: message,
+            key: Date.now(),
+            className: "default-notification",
+            dismissAfter: timeout
+        }
+    );
+}
+export function addWarningNotification(message, timeout) {
+    return addNotification({
+        message: message,
+        key: Date.now(),
+        className: "warning-notification",
+        dismissAfter: timeout,
+        barStyle: {
+            background: "#ffcc00",
+            color: "black",
+            fontWeight: "bold"
+        }
+    })
 }
