@@ -143,3 +143,24 @@ export function addWarningNotification(message, timeout) {
         }
     })
 }
+
+
+/**
+ * Author section
+ */
+export function changeAuthors(text) {
+    return {
+        type: constants.CHANGE_IMPORT_FORM_AUTHORS,
+        authors: text
+    }
+}
+
+/**
+ * Affiliation section
+ */
+export function changeAffiliationSelection(text) {
+    return {
+        type: constants.CHANGE_IMPORT_FORM_SELECTED_AFFILIATION,
+        selectedAffiliation: text
+    }
+}
