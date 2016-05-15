@@ -30,34 +30,17 @@
 import * as constants from '../constants/AppConstants';
 import reqwest from 'reqwest';
 
-export function asyncChangeProjectName(name) {
-  return (dispatch) => {
-    // You can do async stuff here!
-    // API fetching, Animations,...
-    // For more information as to how and why you would do this, check https://github.com/gaearon/redux-thunk
-    return dispatch(changeProjectName(name));
-  };
-}
-
-export function asyncChangeOwnerName(name) {
-  return (dispatch) => {
-    // You can do async stuff here!
-    // API fetching, Animations,...
-    // For more information as to how and why you would do this, check https://github.com/gaearon/redux-thunk
-    return dispatch(changeOwnerName(name));
-  };
-}
 
 export function changeProjectName(name) {
-  return { type: constants.CHANGE_PROJECT_NAME, name };
+    return { type: constants.CHANGE_PROJECT_NAME, name };
 }
 
 export function changeOwnerName(name) {
-  return { type: constants.CHANGE_OWNER_NAME, name };
+    return { type: constants.CHANGE_OWNER_NAME, name };
 }
 
 export function changeTest(message) {
-  return { type: constants.CHANGE_TEST, message}
+    return { type: constants.CHANGE_TEST, message };
 }
 
 /* Entry form actions */
@@ -65,42 +48,48 @@ export function changeTest(message) {
 export function updateImportFormAsync(pmid) {
     return (dispatch) => {
         if (!pmid) {
-            dispatch(addWarningNotification("未填写PMID",5000));
+            dispatch(addWarningNotification('未填写PMID', 5000));
             return;
         }
         /* set isLoading = true */
         dispatch(setImportFormLoadingState(true));
         reqwest(`/api/query/pmid/${pmid}`)
             .then((resp) => {
-                dispatch(addDefaultNotification("加载成功！",4000));
-                dispatch(setImportFormState({data:resp}));  // TODO: potential break when backend key changes.
+                dispatch(addDefaultNotification('加载成功！', 4000));
+                // TODO: potential break when backend key changes.
+                dispatch(setImportFormState({ data: resp }));
 
                 /* Affiliation Stuff */
                 if (resp.affiliation[0]) {
-                    dispatch(changeAffiliationSelection(tempSelectedAffiliation));  // Select the first candidate
+                    // Select the first candidate
+                    dispatch(changeAffiliationSelection(resp.affiliation[0]));
                 } else {
-                    dispatch(addWarningNotification("请手动填写附属单位", 4000));
+                    dispatch(addWarningNotification('请手动填写附属单位', 4000));
                 }
             })
             .fail((err) => {
-                dispatch(addWarningNotification("加载失败： " + err.statusText, 5000));  //todo: backend server should use statusText for consistency!
+                // todo: backend server should use statusText for consistency!
+                dispatch(
+                    addWarningNotification(`加载失败：${err.statusText}`, 5000)
+                );
             })
             .always(() => {
                 dispatch(setImportFormLoadingState(false));
             });
-    }
+    };
 }
+
 /**
  * set all state of importForm
  * @method setImportFormState
  * @param  {object}           state     object contains newState
  */
 export function setImportFormState(state) {
-  return { type: constants.SET_IMPORT_FORM_STATE, newState:state };
+    return { type: constants.SET_IMPORT_FORM_STATE, newState: state };
 }
 
 export function setImportFormPMID(pmid) {
-    return { type: constants.CHANGE_IMPORT_FORM_PMID, pmid:pmid};
+    return { type: constants.CHANGE_IMPORT_FORM_PMID, pmid };
 }
 
 /**
@@ -109,7 +98,7 @@ export function setImportFormPMID(pmid) {
  * @param  {bool}                  state set the state to `state`
  */
 export function setImportFormLoadingState(state) {
-    return { type: constants.CHANGE_IMPORT_FORM_LOADING_STATE, isLoading:state};
+    return { type: constants.CHANGE_IMPORT_FORM_LOADING_STATE, isLoading: state };
 }
 
 
@@ -118,36 +107,36 @@ export function setImportFormLoadingState(state) {
  */
 
 export function addNotification(notification) {
-    return { type: constants.ADD_NOTIFICATION, notification};
+    return { type: constants.ADD_NOTIFICATION, notification };
 }
 
 export function removeNotification(notification) {
-    return { type: constants.REMOVE_NOTIFICATION, notification};
+    return { type: constants.REMOVE_NOTIFICATION, notification };
 }
 
 
 /* Helpers */
 export function addDefaultNotification(message, timeout) {
     return addNotification({
-            message: message,
-            key: Date.now(),
-            className: "default-notification",
-            dismissAfter: timeout
-        }
+        message,
+        key: Date.now(),
+        className: 'default-notification',
+        dismissAfter: timeout
+    }
     );
 }
 export function addWarningNotification(message, timeout) {
     return addNotification({
-        message: message,
+        message,
         key: Date.now(),
-        className: "warning-notification",
+        className: 'warning-notification',
         dismissAfter: timeout,
         barStyle: {
-            background: "#ffcc00",
-            color: "black",
-            fontWeight: "bold"
+            background: '#ffcc00',
+            color: 'black',
+            fontWeight: 'bold'
         }
-    })
+    });
 }
 
 
@@ -158,7 +147,7 @@ export function changeAuthors(text) {
     return {
         type: constants.CHANGE_IMPORT_FORM_AUTHORS,
         authors: text
-    }
+    };
 }
 
 /**
@@ -168,5 +157,30 @@ export function changeAffiliationSelection(text) {
     return {
         type: constants.CHANGE_IMPORT_FORM_SELECTED_AFFILIATION,
         selectedAffiliation: text
-    }
+    };
+}
+
+
+/* Article Info section */
+export function changeSource(text) {
+    return {
+        type: constants.CHANGE_IMPORT_FORM_SOURCE,
+        source: text
+    };
+}
+
+
+/* Applicant section */
+export function changeApplicantName(name) {
+    return {
+        type: constants.CHANGE_IMPORT_FORM_APPLICANT_NAME,
+        name
+    };
+}
+
+export function changeApplicantDepartment(department) {
+    return {
+        type: constants.CHANGE_IMPORT_FORM_APPLICANT_DEPARTMENT,
+        department
+    };
 }

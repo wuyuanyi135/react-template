@@ -1,24 +1,17 @@
-import {connect} from "react-redux";
-import React, {Component} from 'react';
-import {Button, ButtonGroup, FormGroup, ControlLabel, HelpBlock, FormControl, Panel, Glyphicon, InputGroup} from 'react-bootstrap';
+import React from 'react';
 import PMIDPanel from './PMIDPanel.react';
+import ApplicantPanel from './ApplicantPanel.react.js';
 import AuthorPanel from './AuthorPanel.react';
-class EntryForm extends Component {
-    constructor() {
-        super();
-    }
-
-    render() {
-        var notifications = this.props.notifications;
-        return  (
-            <div>
-                <form>
-                    <PMIDPanel/>
-                    <AuthorPanel/>
-                </form>
-            </div>
-        );
-    }
-}
+import ArticleInfoPanel from './ArticleInfoPanel.react.js';
+const EntryForm = () => (
+    <div>
+        <form>
+            <ApplicantPanel />
+            <PMIDPanel />
+            <AuthorPanel />
+            <ArticleInfoPanel />
+        </form>
+    </div>
+);
 
 export default EntryForm;
