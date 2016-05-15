@@ -10,7 +10,8 @@ const initialState = {
         source: '',
         issn: '',
         department: '',
-        applicant: ''
+        applicant: '',
+        publicationTypes: []
     },
     isLoading: false
 };

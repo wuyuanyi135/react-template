@@ -6,7 +6,9 @@ import {
     FormControl,
     ControlLabel,
     FormGroup,
-    Panel
+    Panel,
+    ListGroup,
+    ListGroupItem
 } from 'react-bootstrap';
 
 const ArticleInfoPanel = (props) => {
@@ -15,6 +17,7 @@ const ArticleInfoPanel = (props) => {
     const source = props.source;
     const issn = props.issn;
     const issnType = props.issnType;
+    const pt = Object.assign([], props.pt);
     return (
         <Panel header="文献信息" className="author-panel form-panel">
             <div className="form-panel-content">
@@ -35,6 +38,22 @@ const ArticleInfoPanel = (props) => {
                       value={issn}
                     />
                 </FormGroup>
+                {
+                    pt.length ? (
+                        <FormGroup>
+                            <ControlLabel>来源 PT (PubMed)</ControlLabel>
+                            <ListGroup>
+                                {
+                                    pt.map((item, index) => (
+                                        <ListGroupItem key={index}>
+                                            {item}
+                                        </ListGroupItem>
+                                    ))
+                                }
+                            </ListGroup>
+                        </FormGroup>
+                    ) : null
+                }
 
                 <FormGroup>
                     <ControlLabel>分区/SCI</ControlLabel>
@@ -49,7 +68,8 @@ function select(state) {
     return {
         source: state.importForm.data.source,
         issn: state.importForm.data.issn,
-        issnType: state.importForm.data.issnType
+        issnType: state.importForm.data.issnType,
+        pt: state.importForm.data.publicationTypes
     };
 }
 module.exports = connect(select)(ArticleInfoPanel);

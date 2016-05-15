@@ -109,6 +109,7 @@ select	js/components/App.react.js	/^function select(state) {$/;"	f
 select	js/components/components/ApplicantPanel.react.js	/^function select(state) {$/;"	f
 select	js/components/components/ArticleInfoPanel.react.js	/^function select(state) {$/;"	f
 select	js/components/components/AuthorPanel.react.js	/^function select(state) {$/;"	f
+select	js/components/components/EntryForm.react.js	/^function select(state) {$/;"	f
 select	js/components/components/PMIDPanel.react.js	/^function select(state) {$/;"	f
 select	js/components/pages/HomePage.react.js	/^function select(state) {$/;"	f
 select	js/components/pages/ImportPage.react.js	/^function select(state) {$/;"	f

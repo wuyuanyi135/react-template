@@ -184,3 +184,8 @@ export function changeApplicantDepartment(department) {
         department
     };
 }
+
+/* submit import form */
+export function submitImportForm(data) {
+    // TODO: need some validation here
+}
