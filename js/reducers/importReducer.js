@@ -11,6 +11,8 @@ const initialState = {
         issn: '',
         department: '',
         applicant: '',
+        departmentPinyin: '',
+        applicantPinyin: '',
         publicationTypes: []
     },
     isLoading: false
@@ -51,8 +53,14 @@ function importReducer(state = initialState, action) {
     case constants.CHANGE_IMPORT_FORM_APPLICANT_NAME:
         return _.merge({}, state, { data: { applicant: action.name } });
 
+    case constants.CHANGE_IMPORT_FORM_APPLICANT_NAME_PINYIN:
+        return _.merge({}, state, { data: { applicantPinyin: action.applicantPinyin } });
+
     case constants.CHANGE_IMPORT_FORM_APPLICANT_DEPARTMENT:
         return _.merge({}, state, { data: { department: action.department } });
+
+    case constants.CHANGE_IMPORT_FORM_APPLICANT_DEPARTMENT_PINYIN:
+        return _.merge({}, state, { data: { departmentPinyin: action.departmentPinyin } });
     default:
         return state;
     }

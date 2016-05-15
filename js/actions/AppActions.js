@@ -29,6 +29,7 @@
 
 import * as constants from '../constants/AppConstants';
 import reqwest from 'reqwest';
+import pinyin from 'pinyinlite';
 
 
 export function changeProjectName(name) {
@@ -69,9 +70,12 @@ export function updateImportFormAsync(pmid) {
             })
             .fail((err) => {
                 // todo: backend server should use statusText for consistency!
+                const msg = err.responseText ? err.responseText : err.statusText;
+
                 dispatch(
-                    addWarningNotification(`加载失败：${err.statusText}`, 5000)
+                    addWarningNotification(`加载失败：${msg}`, 5000)
                 );
+                console.log(err);
             })
             .always(() => {
                 dispatch(setImportFormLoadingState(false));
@@ -172,16 +176,38 @@ export function changeSource(text) {
 
 /* Applicant section */
 export function changeApplicantName(name) {
+    return dispatch => {
+        const namePinyin = pinyin(name).reduce((p, c) => `${p} ${c}`, '');
+        dispatch(changeApplicantNamePinyin(namePinyin));
+        dispatch({
+            type: constants.CHANGE_IMPORT_FORM_APPLICANT_NAME,
+            name
+        });
+    };
+}
+
+export function changeApplicantNamePinyin(applicantPinyin) {
     return {
-        type: constants.CHANGE_IMPORT_FORM_APPLICANT_NAME,
-        name
+        type: constants.CHANGE_IMPORT_FORM_APPLICANT_NAME_PINYIN,
+        applicantPinyin
+    };
+}
+
+export function changeApplicantDepartmentPinyin(departmentPinyin) {
+    return {
+        type: constants.CHANGE_IMPORT_FORM_APPLICANT_DEPARTMENT_PINYIN,
+        departmentPinyin
     };
 }
 
 export function changeApplicantDepartment(department) {
-    return {
-        type: constants.CHANGE_IMPORT_FORM_APPLICANT_DEPARTMENT,
-        department
+    return dispatch => {
+        const dpPinyin = pinyin(department).reduce((p, c) => `${p} ${c}`, '');
+        dispatch(changeApplicantDepartmentPinyin(dpPinyin));
+        dispatch({
+            type: constants.CHANGE_IMPORT_FORM_APPLICANT_DEPARTMENT,
+            department
+        });
     };
 }
 
