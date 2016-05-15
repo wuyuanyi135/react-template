@@ -214,4 +214,7 @@ export function changeApplicantDepartment(department) {
 /* submit import form */
 export function submitImportForm(data) {
     // TODO: need some validation here
+    return dispatch => {
+        reqwest('/api/import')
+    };
 }

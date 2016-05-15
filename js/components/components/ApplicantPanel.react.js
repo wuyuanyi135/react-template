@@ -71,7 +71,7 @@ function ApplicantPanel(props) {
 
 
 function select(state) {
-    const data = state.importForm.data;
+    const data = state.importForm.applicant;
     return {
         department: data.department,
         departmentPinyin: data.departmentPinyin,

@@ -9,11 +9,13 @@ const initialState = {
         selectedAffiliation: '',
         source: '',
         issn: '',
+        publicationTypes: []
+    },
+    applicant: {
         department: '',
         applicant: '',
         departmentPinyin: '',
-        applicantPinyin: '',
-        publicationTypes: []
+        applicantPinyin: ''
     },
     isLoading: false
 };
@@ -51,16 +53,16 @@ function importReducer(state = initialState, action) {
 
     // Applicant
     case constants.CHANGE_IMPORT_FORM_APPLICANT_NAME:
-        return _.merge({}, state, { data: { applicant: action.name } });
+        return _.merge({}, state, { applicant: { applicant: action.name } });
 
     case constants.CHANGE_IMPORT_FORM_APPLICANT_NAME_PINYIN:
-        return _.merge({}, state, { data: { applicantPinyin: action.applicantPinyin } });
+        return _.merge({}, state, { applicant: { applicantPinyin: action.applicantPinyin } });
 
     case constants.CHANGE_IMPORT_FORM_APPLICANT_DEPARTMENT:
-        return _.merge({}, state, { data: { department: action.department } });
+        return _.merge({}, state, { applicant: { department: action.department } });
 
     case constants.CHANGE_IMPORT_FORM_APPLICANT_DEPARTMENT_PINYIN:
-        return _.merge({}, state, { data: { departmentPinyin: action.departmentPinyin } });
+        return _.merge({}, state, { applicant: { departmentPinyin: action.departmentPinyin } });
     default:
         return state;
     }
