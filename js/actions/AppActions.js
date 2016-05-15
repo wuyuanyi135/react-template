@@ -75,6 +75,12 @@ export function updateImportFormAsync(pmid) {
                 dispatch(addDefaultNotification("加载成功！",4000));
                 dispatch(setImportFormState({data:resp}));  // TODO: potential break when backend key changes.
 
+                /* Affiliation Stuff */
+                if (resp.affiliation[0]) {
+                    dispatch(changeAffiliationSelection(tempSelectedAffiliation));  // Select the first candidate
+                } else {
+                    dispatch(addWarningNotification("请手动填写附属单位", 4000));
+                }
             })
             .fail((err) => {
                 dispatch(addWarningNotification("加载失败： " + err.statusText, 5000));  //todo: backend server should use statusText for consistency!

@@ -27,20 +27,22 @@ class AuthorPanel extends Component {
                         onChange={e => dispatch(actions.changeAuthors(e.target.value))}
                         value={authors}></FormControl>
                 </FormGroup>
-
+                {affiliation.length? (
+                    <FormGroup className="form-panel-content">
+                        <ControlLabel>所属单位列表 (点击选择)</ControlLabel>
+                        <ListGroup>
+                            {console.log(affiliation)}
+                            {console.log(_(affiliation).uniq().omitBy(_.isNull).values().value())}
+                            {_(affiliation).uniq().omitBy(_.isNull).values().value().map((aff, index) =>
+                                <ListGroupItem
+                                    key={index}
+                                    onClick={e => dispatch(actions.changeAffiliationSelection(e.target.textContent))}
+                                    >{aff}</ListGroupItem>) }
+                        </ListGroup>
+                    </FormGroup>) :null
+                }
                 <FormGroup className="form-panel-content">
-                    <ControlLabel>所属单位列表 (点击选择)</ControlLabel>
-                    <ListGroup>
-                        {_(affiliation).uniq().omitBy(_.isNull).values().value().map((aff, index) =>
-                            <ListGroupItem
-                                key={index}
-                                onClick={e => dispatch(actions.changeAffiliationSelection(e.target.textContent))}
-                                >{aff}</ListGroupItem>) }
-                    </ListGroup>
-                </FormGroup>
-
-                <FormGroup className="form-panel-content">
-                    <ControlLabel>所属单位 (可编辑)</ControlLabel>;
+                    <ControlLabel>所属单位 (可编辑)</ControlLabel>
                     <FormControl
                         type="text"
                         placeholder="Affiliation"

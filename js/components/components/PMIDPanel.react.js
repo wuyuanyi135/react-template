@@ -35,13 +35,14 @@ class PMIDPanel extends Component {
                                 name="pmid"
                                 placeholder="PMID"
                                 value={pmid}
-                                onChange={e => dispatch(actions.setImportFormPMID(e.target.value))}/>
+                                onChange={e => dispatch(actions.setImportFormPMID(e.target.value))}
+                                onKeyPress={e => e.charCode == 13? dispatch(actions.updateImportFormAsync(pmid)): null}
+                                />
+
                                 {
                                     isLoading? (
                                         <FormControl.Feedback>
-                                            <div className="form-loader-container">
-                                                <PulseLoader size="10px" color="#bbb"/>
-                                            </div>
+
                                         </FormControl.Feedback>
                                     ): null
                                 }
@@ -50,7 +51,11 @@ class PMIDPanel extends Component {
                         <InputGroup.Button>
                             <Button
                                 disabled={isLoading}
-                                onClick={()=>dispatch(actions.updateImportFormAsync(pmid))}>{isLoading?"正在获取":"在线获取"}</Button>
+                                onClick={()=>dispatch(actions.updateImportFormAsync(pmid))}
+                                >{isLoading?
+                                    <div className="form-loader-container"><PulseLoader size="10px" color="#bbb"/></div>
+                                    : <div>在线获取</div>
+                                    }</Button>
                         </InputGroup.Button>
                     </InputGroup>
 
