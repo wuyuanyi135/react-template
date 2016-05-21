@@ -30,7 +30,8 @@
 import * as constants from '../constants/AppConstants';
 import reqwest from 'reqwest';
 import pinyin from 'pinyinlite';
-
+import _ from 'lodash';
+import { mapMedline } from '../utils/mapMedline';
 
 export function changeProjectName(name) {
     return { type: constants.CHANGE_PROJECT_NAME, name };
@@ -58,14 +59,20 @@ export function updateImportFormAsync(pmid) {
             .then((resp) => {
                 dispatch(addDefaultNotification('加载成功！', 4000));
                 // TODO: potential break when backend key changes.
-                dispatch(setImportFormState({ data: resp }));
-
+                const mappedData = mapMedline(resp);
+                dispatch(setImportFormState({ data: mappedData }));
                 /* Affiliation Stuff */
-                if (resp.affiliation[0]) {
+                const firstAffiliation = _.castArray(resp.AD)[0];
+                if (firstAffiliation) {
                     // Select the first candidate
-                    dispatch(changeAffiliationSelection(resp.affiliation[0]));
+                    dispatch(changeAffiliationSelection(firstAffiliation));
                 } else {
                     dispatch(addWarningNotification('请手动填写附属单位', 4000));
+                }
+
+                const firstISSN = _.castArray(mappedData.issn)[0].issn
+                if (firstISSN) {
+                    dispatch(changeISSNSelection(firstISSN));
                 }
             })
             .fail((err) => {
@@ -126,8 +133,7 @@ export function addDefaultNotification(message, timeout) {
         key: Date.now(),
         className: 'default-notification',
         dismissAfter: timeout
-    }
-    );
+    });
 }
 export function addWarningNotification(message, timeout) {
     return addNotification({
@@ -208,6 +214,20 @@ export function changeApplicantDepartment(department) {
             type: constants.CHANGE_IMPORT_FORM_APPLICANT_DEPARTMENT,
             department
         });
+    };
+}
+
+export function changeISSNSelection (issn) {
+    return {
+        type: constants.CHANGE_IMPORT_FORM_SELECTED_ISSN,
+        issn
+    };
+}
+
+export function changePTSelection (pt) {
+    return {
+        type: constants.CHANGE_IMPORT_FORM_SELECTED_PT,
+        pt
     };
 }
 

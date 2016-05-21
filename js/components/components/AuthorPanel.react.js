@@ -18,7 +18,9 @@ const AuthorPanel = (props) => {
     const selectedAffiliation = props.selectedAffiliation;
     return (
         <Panel header="作者" className="author-panel form-panel">
-            <FormGroup className="form-panel-content">
+            <FormGroup
+              className="form-panel-content"
+              validationState={authors?'success':'error'}>
                 <ControlLabel>作者</ControlLabel>
                 <FormControl
                   type="text"
@@ -47,7 +49,9 @@ const AuthorPanel = (props) => {
                     </ListGroup>
                 </FormGroup>) : null
             }
-            <FormGroup className="form-panel-content">
+            <FormGroup
+              className="form-panel-content"
+              validationState={selectedAffiliation?'success':'error'}>
                 <ControlLabel>所属单位 (可编辑)</ControlLabel>
                 <FormControl
                   type="text"

@@ -15,7 +15,7 @@ import {NotificationStack} from 'react-notification';
 
 import * as actions from "../actions/AppActions.js";
 class App extends Component {
-    
+
     render() {
         var dispatch = this.props.dispatch;
         var notifications = this.props.notifications;
@@ -29,9 +29,9 @@ class App extends Component {
                 <div className="wrapper">
                     { this.props.children }
                 </div>
-                <NotificationStack
-                    notifications={notifications.toArray()}
-                    onDismiss={(notification) => dispatch(actions.removeNotification(notification))}/>
+                    <NotificationStack
+                        notifications={notifications.toArray()}
+                        onDismiss={(notification) => dispatch(actions.removeNotification(notification))}/>
             </div>
         );
     }

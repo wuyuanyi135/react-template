@@ -8,8 +8,10 @@ const initialState = {
         affiliation: [],
         selectedAffiliation: '',
         source: '',
-        issn: '',
-        publicationTypes: []
+        issn: [],
+        selectedISSN: '',
+        publicationTypes: [],
+        selectedPublicationTypes: ''
     },
     applicant: {
         department: '',
@@ -25,7 +27,7 @@ function importReducer(state = initialState, action) {
 
     case constants.SET_IMPORT_FORM_STATE:
         if (typeof action.newState === 'object') {
-            return _.merge({}, state, action.newState); // resursively change the object
+            return _.assign({}, state, action.newState); // resursively change the object
         }
         // reset state
         return assignToEmpty(initialState);
@@ -63,6 +65,13 @@ function importReducer(state = initialState, action) {
 
     case constants.CHANGE_IMPORT_FORM_APPLICANT_DEPARTMENT_PINYIN:
         return _.merge({}, state, { applicant: { departmentPinyin: action.departmentPinyin } });
+
+    case constants.CHANGE_IMPORT_FORM_SELECTED_PT:
+        return _.merge({}, state, { data: { selectedPublicationTypes: action.pt } });
+
+    case constants.CHANGE_IMPORT_FORM_SELECTED_ISSN:
+        return _.merge({}, state, { data: { selectedISSN: action.issn } });
+
     default:
         return state;
     }
