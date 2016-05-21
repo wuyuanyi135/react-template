@@ -11,8 +11,9 @@
     /*display: block;*/
 }
 
-.helpblock-blk {
+.helpblock-blk, .controllabel-blk {
     display: block;
+
 }
 
 .form-loader-container {

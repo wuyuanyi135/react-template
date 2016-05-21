@@ -27,7 +27,7 @@ function importReducer(state = initialState, action) {
 
     case constants.SET_IMPORT_FORM_STATE:
         if (typeof action.newState === 'object') {
-            return _.assign({}, state, action.newState); // resursively change the object
+            return _.merge({}, state, action.newState); // resursively change the object
         }
         // reset state
         return assignToEmpty(initialState);

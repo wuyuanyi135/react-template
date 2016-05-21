@@ -1,4 +1,4 @@
-import * as actions from '../../actions/AppActions';
+import * as actions from '../../actions/ImportFormActions.js';
 import { connect } from 'react-redux';
 import React from 'react';
 import {

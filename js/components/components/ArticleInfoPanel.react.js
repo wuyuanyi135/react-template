@@ -1,8 +1,9 @@
-import * as actions from '../../actions/AppActions';
+import * as actions from '../../actions/ImportFormActions';
 import { connect } from 'react-redux';
 import React from 'react';
 import {
     Button,
+    ButtonGroup,
     FormControl,
     ControlLabel,
     FormGroup,
@@ -11,12 +12,17 @@ import {
     ListGroupItem
 } from 'react-bootstrap';
 
+const handlePTButtonClick = (e, dispatch) => {
+    dispatch(actions.changePTSelection(e.target.textContent));
+}
+
 const ArticleInfoPanel = (props) => {
     const dispatch = props.dispatch;
 
     const source = props.source;
     const issn = props.issn;
     const selectedISSN = props.selectedISSN;
+    const selectedPT = props.selectedPublicationTypes;
     const pt = Object.assign([], props.pt);
     return (
         <Panel header="文献信息" className="author-panel form-panel">
@@ -48,8 +54,15 @@ const ArticleInfoPanel = (props) => {
                         </FormGroup>
                     ) : null
                 }
-                <FormGroup>
-                    <ControlLabel>PT选择</ControlLabel>
+                <FormGroup validationState={selectedPT? 'success' : 'error'}>
+                    <ControlLabel className="controllabel-blk">PT选择</ControlLabel>
+                    <ButtonGroup>
+                        <Button active={selectedPT=="论著"} onClick={e => handlePTButtonClick(e, dispatch)}>论著</Button>
+                        <Button active={selectedPT=="综述"} onClick={e => handlePTButtonClick(e, dispatch)}>综述</Button>
+                        <Button active={selectedPT=="Meta分析"} onClick={e => handlePTButtonClick(e, dispatch)}>Meta分析</Button>
+                        <Button active={selectedPT=="信函"} onClick={e => handlePTButtonClick(e, dispatch)}>信函</Button>
+                        <Button active={selectedPT=="病例报道"} onClick={e => handlePTButtonClick(e, dispatch)}>病例报道</Button>
+                    </ButtonGroup>
                 </FormGroup>
                 {issn.length ?
                     <FormGroup>
@@ -88,11 +101,13 @@ const ArticleInfoPanel = (props) => {
 };
 
 function select(state) {
+    var data = state.importForm.data;
     return {
-        source: state.importForm.data.source,
-        issn: state.importForm.data.issn,
-        selectedISSN: state.importForm.data.selectedISSN,
-        pt: state.importForm.data.publicationTypes
+        source: data.source,
+        issn: data.issn,
+        selectedISSN: data.selectedISSN,
+        pt: data.publicationTypes,
+        selectedPublicationTypes: data.selectedPublicationTypes
     };
 }
 module.exports = connect(select)(ArticleInfoPanel);
