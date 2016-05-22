@@ -80,3 +80,22 @@ export function addWarningNotification(message, timeout) {
         }
     });
 }
+
+export function updateRecentImport(newList) {
+    return {
+        type: constants.UPDATE_RECENT_IMPORT,
+        recentImport: newList
+    };
+}
+
+export function fetchRecentImport() {
+    return dispatch => {
+        console.log("IMHERE");
+        reqwest({
+            url: '/api/service/entry?$limit=10',
+            method: 'get'
+        })
+        .then(value => {console.log(value);})
+        .fail(err=>{console.error(err);})
+    }
+}

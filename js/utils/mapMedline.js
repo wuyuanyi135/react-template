@@ -1,5 +1,8 @@
 import _ from 'lodash'
 function reduceAuthors(authorList) {
+    if (!authorList.length) {
+        return "";
+    }
     var ret = _.castArray(authorList).reduce((p, c) => {
         return `${p}, ${c}`;
     }, "");
@@ -38,6 +41,7 @@ function makeISSN(IS) {
  * @return {object}                 mapped object
  */
 export function mapMedline(medlineObject) {
+    console.log(_(_.castArray(medlineObject.AD)).omitBy(_.isUndefined).values().value());
     return {
         pmid: medlineObject.PMID,
         authors: reduceAuthors(medlineObject.AU),

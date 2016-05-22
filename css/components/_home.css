@@ -7,16 +7,17 @@
 	padding-right: 15px;
 }
 
-
-.subTitle {
-	
+.header-refresh-icon {
+	margin-left: 5%;
+	font-size: 18px;
+	width: 18px;
+	height: 18px;
+	transition: transform 1s ease;
 }
 
-
-.logo {
-	max-height: 5em;
-	margin: 0 auto;
-	display: block;
+.header-refresh-icon:hover {
+	color: #ccc;
+	transform: rotate(360deg);
 }
 
 .home__label {
@@ -31,4 +32,8 @@
 	border-width: 1px;
 	border-color: grey;
 	padding: 0.3em;
+}
+
+.search-container {
+	margin-top: 2%;
 }

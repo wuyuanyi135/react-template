@@ -47,7 +47,7 @@ class App extends Component {
                 </Navbar.Header>
                 <Navbar.Collapse>
                     <Nav>
-                        <NavItem eventKey={1} href="#">索引</NavItem>
+                        <NavItem eventKey={1} href="/">索引</NavItem>
                         <NavItem eventKey={2} href="/import">录入</NavItem>
                         <NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
                             <MenuItem eventKey={3.1}>Action</MenuItem>

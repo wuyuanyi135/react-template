@@ -7,40 +7,37 @@ import {changeTest} from '../../actions/AppActions';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
-import {Alert, Button, Nav, NavItem, Navbar, NavDropdown, MenuItem} from 'react-bootstrap';
+import {Button, FormControl, FormGroup, InputGroup, Grid, Row, Col} from 'react-bootstrap';
 import {push} from 'react-router-redux';
-
+import RecentImport from '../components/RecentImport.react.js';
 class HomePage extends Component {
-  handleClick = (e) => {
-    this.props.dispatch(changeTest("fappppd"));
-  }
-
   render() {
     const dispatch = this.props.dispatch;
-    const {
-      projectName, ownerName
-    } = this.props.data;
+
     return (
       <div>
-        <h1>Hello World!</h1>
+          <h1>搜索</h1>
+          <FormGroup className="search-container">
+              <InputGroup>
+                  <FormControl
+                      type="text"
+                      placeholder="搜索"/>
+                  <InputGroup.Button>
+                      <Button>搜索</Button>
+                  </InputGroup.Button>
+              </InputGroup>
+          </FormGroup>
 
-        <table className="table table-striped">
-          <tbody>
-            <tr>
-              <td>hello</td>
-              <td>world</td>
-            </tr>
+          <Grid>
+              <Row>
+                  <Col md={6}>
+                      <RecentImport/>
+                  </Col>
+                  <Col md={6}>
 
-            <tr>
-              <td>hello</td>
-              <td>{this.props.data.test}</td>
-            </tr>
-          </tbody>
-        </table>
-        <Alert bsStyle="danger">
-          <h4>Oh snap! You got an error!!!!</h4>
-          <Button bsStyle="warning" onClick={() => this.props.dispatch(push('/import'))}>Cancel</Button>
-        </Alert>
+                  </Col>
+              </Row>
+          </Grid>
       </div>
     );
   }
