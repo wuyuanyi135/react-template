@@ -10,6 +10,8 @@ import {Link} from 'react-router';
 import {Button, FormControl, FormGroup, InputGroup, Grid, Row, Col} from 'react-bootstrap';
 import {push} from 'react-router-redux';
 import RecentImport from '../components/RecentImport.react.js';
+import RecentApplicant from  '../components/RecentApplicant.react.js';
+import SearchBar from '../components/SearchBar.react.js';
 class HomePage extends Component {
   render() {
     const dispatch = this.props.dispatch;
@@ -17,23 +19,17 @@ class HomePage extends Component {
     return (
       <div>
           <h1>搜索</h1>
-          <FormGroup className="search-container">
-              <InputGroup>
-                  <FormControl
-                      type="text"
-                      placeholder="搜索"/>
-                  <InputGroup.Button>
-                      <Button>搜索</Button>
-                  </InputGroup.Button>
-              </InputGroup>
-          </FormGroup>
+          <SearchBar/>
 
-          <Grid>
+          <Grid fluid={true}>
               <Row>
-                  <Col md={6}>
+                  <Col md={4}>
                       <RecentImport/>
                   </Col>
-                  <Col md={6}>
+                  <Col md={4}>
+                      <RecentApplicant/>
+                  </Col>
+                  <Col md={4}>
 
                   </Col>
               </Row>

@@ -23,10 +23,20 @@ const ArticleInfoPanel = (props) => {
     const issn = props.issn;
     const selectedISSN = props.selectedISSN;
     const selectedPT = props.selectedPublicationTypes;
+    const articleTitle = props.articleTitle;
     const pt = Object.assign([], props.pt);
     return (
         <Panel header="文献信息" className="author-panel form-panel">
             <div className="form-panel-content">
+                <FormGroup validationState={articleTitle ? 'success' : 'error'}>
+                    <ControlLabel>文献标题</ControlLabel>
+                    <FormControl
+                        type="text"
+                        value={articleTitle}
+                        onChange={e=>dispatch(actions.changeArticleTitle(e.target.value))}
+                        placeholder="Article Title"
+                        />
+                </FormGroup>
                 <FormGroup
                   validationState={source?'success':'error'}>
                     <ControlLabel>来源</ControlLabel>
@@ -107,6 +117,7 @@ function select(state) {
         issn: data.issn,
         selectedISSN: data.selectedISSN,
         pt: data.publicationTypes,
+        articleTitle: data.articleTitle,
         selectedPublicationTypes: data.selectedPublicationTypes
     };
 }

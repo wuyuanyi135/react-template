@@ -19,7 +19,8 @@ import {OrderedSet} from 'immutable';
 import _ from 'lodash';
 const initialState = {
   notifications: OrderedSet(),
-  recentImport: []
+  recentImport: [],
+  recentApplicant: []
 };
 
 function homeReducer(state = initialState, action) {
@@ -39,7 +40,10 @@ function homeReducer(state = initialState, action) {
         return _.assign({}, state, {
             recentImport: action.recentImport
         });
-        
+    case constants.UPDATE_RECENT_APPLICANT:
+        return _.assign({}, state, {
+            recentApplicant: action.recentApplicant
+        }); 
     default:
       return state;
   }

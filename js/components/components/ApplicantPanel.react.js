@@ -36,6 +36,7 @@ function ApplicantPanel(props) {
                           type="text"
                           placeholder="Applicant Pinyin"
                           value={applicantPinyin}
+                          tabIndex="-1"
                           onChange={e => dispatch(
                               actions.changeApplicantNamePinyin(e.target.value)
                           )}
@@ -58,6 +59,7 @@ function ApplicantPanel(props) {
                           type="text"
                           placeholder="Departement Pinyin"
                           value={departmentPinyin}
+                          tabIndex="-1"
                           onChange={e => dispatch(
                               actions.changeApplicantDepartmentPinyin(e.target.value)
                           )}

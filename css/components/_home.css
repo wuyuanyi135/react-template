@@ -37,3 +37,17 @@
 .search-container {
 	margin-top: 2%;
 }
+
+.bs-suggestion-container {
+	width: 100%;
+}
+
+.bs-suggestion-container  li {
+	margin-bottom: 1em;
+}
+
+.bs-suggestion-container b {
+	font-weight: 200;
+	text-shadow: 1px 1px 0.5px;
+	text-decoration: underline;
+}

@@ -15,7 +15,8 @@ const validateForm = (data) => (
         data.selectedISSN,
         data.selectedPublicationTypes,
         data.selectedAffiliation,
-        data.source
+        data.source,
+        data.articleTitle
     ])
 );
 const EntryForm = (props) => (

@@ -41,7 +41,6 @@ function makeISSN(IS) {
  * @return {object}                 mapped object
  */
 export function mapMedline(medlineObject) {
-    console.log(_(_.castArray(medlineObject.AD)).omitBy(_.isUndefined).values().value());
     return {
         pmid: medlineObject.PMID,
         authors: reduceAuthors(medlineObject.AU),
@@ -49,6 +48,7 @@ export function mapMedline(medlineObject) {
         selectedAffiliation: "",
         selectedISSN: "",
         selectedPT: "",
+        articleTitle: medlineObject.TI ? medlineObject.TI : "",
         source: makeSource(medlineObject.SO, medlineObject.PST),
         issn: makeISSN(_.castArray(medlineObject.IS)),
         publicationTypes: _.castArray(medlineObject.PT)

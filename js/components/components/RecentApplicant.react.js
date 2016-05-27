@@ -4,30 +4,30 @@ import * as actions from '../../actions/AppActions.js';
 import {connect} from 'react-redux';
 import _ from 'lodash';
 
-class RecentImport extends Component {
+class RecentApplicant extends Component {
     componentDidMount() {
-        this.props.dispatch(actions.fetchRecentImport(false));
+        this.props.dispatch(actions.fetchRecentApplicant(false));
     }
     render() {
         const props = this.props;
         const dispatch = props.dispatch;
-        const recentImport = props.recentImport;
+        const recentApplicant = props.recentApplicant;
         return (
             <div>
                 <div>
                     <h2>
-                        <span>最新录入</span>
+                        <span>最近申请人</span>
                         <span>
                             <Glyphicon
                                 className="header-refresh-icon"
                                 glyph="refresh"
-                                onClick={()=>dispatch(actions.fetchRecentImport())}/>
+                                onClick={()=>dispatch(actions.fetchRecentApplicant())}/>
                         </span>
                     </h2>
                 </div>
 
                 <div>
-                    {_.castArray(recentImport).map((item, index) => {
+                    {_.castArray(recentApplicant).map((item, index) => {
                         if (!item) {
                             return null;
                         }
@@ -35,10 +35,9 @@ class RecentImport extends Component {
                             <Media key={index}>
                                 <Media.Body>
                                     <Media.Heading componentClass='h4'>
-                                        {item.articleTitle}
+                                        {`${item.department} ${item.applicant}`}
                                     </Media.Heading>
                                     <p>{`PMID: ${item.pmid}`}</p>
-                                    <p>{item.authors}</p>
                                 </Media.Body>
                             </Media>
                         );
@@ -51,8 +50,8 @@ class RecentImport extends Component {
 
 const select = (state) => {
     return {
-        recentImport: state.home.recentImport
+        recentApplicant: state.home.recentApplicant
     };
 };
 
-module.exports = connect(select)(RecentImport);
+module.exports = connect(select)(RecentApplicant);

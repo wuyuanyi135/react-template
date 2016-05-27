@@ -81,6 +81,12 @@ export function addWarningNotification(message, timeout) {
     });
 }
 
+export function updateRecentApplicant(newList) {
+    return {
+        type: constants. UPDATE_RECENT_APPLICANT,
+        recentApplicant: newList
+    };
+}
 export function updateRecentImport(newList) {
     return {
         type: constants.UPDATE_RECENT_IMPORT,
@@ -88,14 +94,40 @@ export function updateRecentImport(newList) {
     };
 }
 
-export function fetchRecentImport() {
+export function fetchRecentImport(showNotification=true) {
     return dispatch => {
-        console.log("IMHERE");
         reqwest({
-            url: '/api/service/entry?$limit=10',
+            url: '/api/service/entry?$limit=3&$sort[createdAt]=-1',
             method: 'get'
         })
-        .then(value => {console.log(value);})
-        .fail(err=>{console.error(err);})
+        .then(value => {
+            if(showNotification) {
+                dispatch(addDefaultNotification('最近添加 列表已更新', 3000));
+            }
+            dispatch(updateRecentImport(value));
+        })
+        .fail(err=>{
+            dispatch(addWarningNotification('列表更新失败', 3000));
+            console.error(err);
+        })
+    }
+}
+
+export function fetchRecentApplicant(showNotification=true) {
+    return dispatch => {
+        reqwest({
+            url: '/api/service/applicant?$limit=3&$sort[createdAt]=-1',
+            method: 'get'
+        })
+        .then(value => {
+            if(showNotification) {
+                dispatch(addDefaultNotification('最近申请 列表已更新', 3000));
+            }
+            dispatch(updateRecentApplicant(value));
+        })
+        .fail(err=>{
+            dispatch(addWarningNotification('列表更新失败', 3000));
+            console.error(err);
+        })
     }
 }

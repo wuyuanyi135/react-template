@@ -154,6 +154,13 @@ export function changePTSelection (pt) {
     };
 }
 
+export function changeArticleTitle(title) {
+    return {
+        type: constants.CHANGE_IMPORT_FORM_ARTICLE_TITLE,
+        title
+    };
+}
+
 /* submit import form */
 export function submitImportFormAsync(data) {
     return (dispatch) => {

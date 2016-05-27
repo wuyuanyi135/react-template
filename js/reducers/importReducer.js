@@ -5,6 +5,7 @@ const initialState = {
     data: {
         pmid: '',
         authors: '',
+        articleTitle: '',
         affiliation: [],
         selectedAffiliation: '',
         source: '',
@@ -53,6 +54,8 @@ function importReducer(state = initialState, action) {
     case constants.CHANGE_IMPORT_FORM_SOURCE:
         return _.merge({}, state, { data: { source: action.source } });
 
+    case constants.CHANGE_IMPORT_FORM_ARTICLE_TITLE:
+        return _.merge({}, state, { data: { articleTitle: action.title } });
     // Applicant
     case constants.CHANGE_IMPORT_FORM_APPLICANT_NAME:
         return _.merge({}, state, { applicant: { applicant: action.name } });
