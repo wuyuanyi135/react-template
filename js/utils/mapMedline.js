@@ -47,7 +47,7 @@ export function mapMedline(medlineObject) {
         affiliation: _(_.castArray(medlineObject.AD)).omitBy(_.isUndefined).values().value(),
         selectedAffiliation: "",
         selectedISSN: "",
-        selectedPT: "",
+        selectedPublicationTypes: "",
         articleTitle: medlineObject.TI ? medlineObject.TI : "",
         source: makeSource(medlineObject.SO, medlineObject.PST),
         issn: makeISSN(_.castArray(medlineObject.IS)),

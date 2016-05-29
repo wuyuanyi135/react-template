@@ -7,9 +7,6 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 
 class RecentImport extends Component {
-    componentDidMount() {
-        this.props.dispatch(actions.fetchRecentImport(false));
-    }
     render() {
         const props = this.props;
         const dispatch = props.dispatch;
@@ -23,7 +20,7 @@ class RecentImport extends Component {
                             <Glyphicon
                                 className="header-refresh-icon"
                                 glyph="refresh"
-                                onClick={()=>dispatch(actions.fetchRecentImport())}/>
+                                onClick={()=>dispatch(actions.fetchRecent())}/>
                         </span>
                     </h2>
                 </div>

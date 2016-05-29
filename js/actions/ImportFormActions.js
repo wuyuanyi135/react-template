@@ -20,7 +20,7 @@ export function updateImportFormAsync(pmid) {
                 dispatch(actions.addDefaultNotification('加载成功！', 4000));
                 // TODO: potential break when backend key changes.
                 const mappedData = mapMedline(resp);
-                dispatch(setImportFormState({ data: mappedData }));
+                dispatch(setImportFormData(mappedData));
                 /* Affiliation Stuff */
                 const firstAffiliation = _.castArray(resp.AD)[0];
                 if (firstAffiliation) {
@@ -57,6 +57,10 @@ export function updateImportFormAsync(pmid) {
  */
 export function setImportFormState(state) {
     return { type: constants.SET_IMPORT_FORM_STATE, newState: state };
+}
+
+export function setImportFormData(data) {
+    return { type: constants.SET_IMPORT_FORM_DATA, data };
 }
 
 export function setImportFormPMID(pmid) {

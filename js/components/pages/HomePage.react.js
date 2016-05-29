@@ -10,10 +10,14 @@ import RecentImport from '../components/RecentImport.react.js';
 import RecentApplicant from '../components/RecentApplicant.react.js';
 import SearchBar from '../components/SearchBar.react.js';
 import DetailDialog from '../components/DetailDialog.react.js';
+import * as homeActions from '../../actions/AppActions.js';
 import * as indexActions from '../../actions/IndexActions.js';
 import * as importActions from '../../actions/ImportFormActions.js';
 
 class HomePage extends Component {
+    componentDidMount() {
+        this.props.dispatch(homeActions.fetchRecent(false));
+    }
     render() {
         const dispatch = this.props.dispatch;
         const show = this.props.show;

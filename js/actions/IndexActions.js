@@ -1,6 +1,7 @@
 import * as constants from '../constants/AppConstants';
 import * as homeActions from './AppActions.js';
 import * as importActions from './ImportFormActions.js';
+import { List } from 'immutable';
 import reqwest from 'reqwest';
 import _ from 'lodash';
 
@@ -18,28 +19,42 @@ export function displayArticleDialog(id) {
             console.error(err);
         }
         // get article info
-        const getArticlePromise = reqwest({
+        reqwest({
             url: `/api/service/entry/${id}`,
             method: 'get'
         })
-        .fail(err => displayError(err));
+        .then(value => {
+            const newValue = _.assign({}, value, { applicant: new List(value.applicant) });
+            dispatch(importActions.setImportFormState());
+            dispatch(importActions.setImportFormData(newValue));
 
-        const getApplicantPromise = reqwest({
-            url: `/api/service/applicant?_refId=${id}`,
-            method: 'get'
+            dispatch(displayDialog(true));
         })
         .fail(err => displayError(err));
+    };
+}
 
-        Promise.all([getApplicantPromise, getArticlePromise])
-            .then(value => {
-                dispatch(importActions.setImportFormState());
-                dispatch(importActions.setImportFormState({ data: value[1] }));
-
-                // do not reverse order!
-                _.castArray(value[0]).map((item) => (
-                    dispatch(importActions.addNewApplicant(item))
-                ));
-                dispatch(displayDialog(true));
-            });
+export function updateFormData(id) {
+    return (dispatch, getState) => {
+        // validation has been done by ui
+        if (!id) {
+            dispatch(homeActions.addWarningNotification('更新失败: ID 无效', 5000));
+        }
+        const dataToUpdate = getState().importForm.data;
+        reqwest({
+            type: 'json',
+            method: 'put',
+            url: `/api/service/entry/${id}`,
+            contentType: 'application/json',
+            data: JSON.stringify(dataToUpdate)
+        })
+        .then((value) => {
+            console.log('Updated documents', value);
+            dispatch(homeActions.addDefaultNotification('更新成功!', 5000));
+        })
+        .fail((error) => {
+            console.log('Update failed', error);
+            dispatch(homeActions.addWarningNotification(`导入失败: ${JSON.parse(error.responseText).message}`, 5000));
+        });
     };
 }

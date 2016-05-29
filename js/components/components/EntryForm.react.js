@@ -3,13 +3,12 @@ import PMIDPanel from './PMIDPanel.react';
 import ApplicantPanel from './ApplicantPanel.react.js';
 import AuthorPanel from './AuthorPanel.react';
 import ArticleInfoPanel from './ArticleInfoPanel.react.js';
-import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
 const EntryForm = (props) => {
     const frm = props.frm;
     const data = frm.data;
-    const applicantPanelProps = { applicant: frm.applicant };
+    const applicantPanelProps = { applicant: data.applicant };
     const pmidPanelProps = { isLoading: frm.isLoading, pmid: data.pmid };
     const authorPanelProps = {
         affiliation: data.affiliation,

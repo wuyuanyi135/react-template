@@ -1,6 +1,6 @@
 import * as constants from '../constants/AppConstants';
 import assignToEmpty from '../utils/assign';
-import { List } from 'immutable';
+import { List, fromJS } from 'immutable';
 import _ from 'lodash';
 export const initialState = {
     data: {
@@ -13,9 +13,10 @@ export const initialState = {
         issn: [],
         selectedISSN: '',
         publicationTypes: [],
-        selectedPublicationTypes: ''
+        selectedPublicationTypes: '',
+        applicant: new List()
     },
-    applicant: new List(),
+
     isLoading: false
 };
 
@@ -24,12 +25,13 @@ function importReducer(state = initialState, action) {
 
     case constants.SET_IMPORT_FORM_STATE:
         if (typeof action.newState === 'object') {
-            return _.assign({}, state, action.newState); // resursively change the object
+            return _.assign({}, state, action.newState);
         }
         // reset state
         return assignToEmpty(initialState);
-        // break;
 
+    case constants.SET_IMPORT_FORM_DATA:
+        return _.assign({}, state, { data: _.assign({}, state.data, action.data) });
 
     case constants.CHANGE_IMPORT_FORM_PMID:
         return _.merge({}, state, { data: { pmid: action.pmid } });
@@ -55,29 +57,37 @@ function importReducer(state = initialState, action) {
 
     // Applicant
     case constants.ADD_NEW_APPLICANT:
-        return _.assign({}, state, { applicant: state.applicant.push(action.applicant) });
+        return _.merge({}, state, { data: { applicant: state.data.applicant.push(action.applicant) } });
 
     case constants.REMOVE_APPLICANT:
-        return _.assign({}, state, { applicant: state.applicant.remove(action.index) });
+        return _.merge({}, state, { data: { applicant: state.data.applicant.remove(action.index) } });
 
     case constants.CHANGE_IMPORT_FORM_APPLICANT_NAME:
         return _.merge({}, state, {
-            applicant: state.applicant.update(action.index, item => ({ ...item, applicant: action.name }))
+            data: {
+                applicant: state.data.applicant.update(action.index, item => ({ ...item, applicant: action.name }))
+            }
         });
 
     case constants.CHANGE_IMPORT_FORM_APPLICANT_NAME_PINYIN:
         return _.merge({}, state, {
-            applicant: state.applicant.update(action.index, item => ({ ...item, applicantPinyin: action.applicantPinyin }))
+            data: {
+                applicant: state.data.applicant.update(action.index, item => ({ ...item, applicantPinyin: action.applicantPinyin }))
+            }
         });
 
     case constants.CHANGE_IMPORT_FORM_APPLICANT_DEPARTMENT:
         return _.merge({}, state, {
-            applicant: state.applicant.update(action.index, item => ({ ...item, department: action.department }))
+            data: {
+                applicant: state.data.applicant.update(action.index, item => ({ ...item, department: action.department }))
+            }
         });
 
     case constants.CHANGE_IMPORT_FORM_APPLICANT_DEPARTMENT_PINYIN:
         return _.merge({}, state, {
-            applicant: state.applicant.update(action.index, item => ({ ...item, departmentPinyin: action.departmentPinyin }))
+            data: {
+                applicant: state.data.applicant.update(action.index, item => ({ ...item, departmentPinyin: action.departmentPinyin }))
+            }
         });
 
     case constants.CHANGE_IMPORT_FORM_SELECTED_PT:

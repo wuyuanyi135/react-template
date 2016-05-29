@@ -6,12 +6,21 @@ import _ from 'lodash';
 
 class RecentApplicant extends Component {
     componentDidMount() {
-        this.props.dispatch(actions.fetchRecentApplicant(false));
+        this.props.dispatch(actions.fetchRecent(false));
+    }
+    computeRecentApplicant() {
+        const recentImport = this.props.recentImport;
+        return _(recentImport)
+          .map((item) => _.castArray(item.applicant)
+            .map((it) => [{ applicant: it, pmid: item.pmid, articleTitle: item.articleTitle }]))
+          .flattenDepth(2)
+          .uniqWith((a, b) => a.applicant.applicant === b.applicant.applicant)
+          .value();
     }
     render() {
         const props = this.props;
         const dispatch = props.dispatch;
-        const recentApplicant = props.recentApplicant;
+        const recentApplicant = this.computeRecentApplicant();
         return (
             <div>
                 <div>
@@ -21,7 +30,7 @@ class RecentApplicant extends Component {
                             <Glyphicon
                               className="header-refresh-icon"
                               glyph="refresh"
-                              onClick={() => dispatch(actions.fetchRecentApplicant())}
+                              onClick={() => dispatch(actions.fetchRecent())}
                             />
                         </span>
                     </h2>
@@ -32,15 +41,16 @@ class RecentApplicant extends Component {
                         if (!item) {
                             return null;
                         }
+                        const applicant = item.applicant;
                         return (
                             <Media key={index}>
                                 <Media.Body>
                                     <Media.Heading componentClass="h4">
-                                        {`${item.department} ${item.applicant}`}
+                                        {`${applicant.department} ${applicant.applicant}`}
                                     </Media.Heading>
                                     {item.pmid ?
                                         <p>{`PMID: ${item.pmid}`}</p> :
-                                        <p>{`Title: ${item._populate.articleTitle}`}</p>
+                                        <p>{`Title: ${item.articleTitle}`}</p>
                                     }
                                 </Media.Body>
                             </Media>
@@ -52,10 +62,8 @@ class RecentApplicant extends Component {
     }
 }
 
-const select = (state) => {
-    return {
-        recentApplicant: state.home.recentApplicant
-    };
-};
+const select = (state) => ({
+    recentImport: state.home.recentImport
+});
 
 module.exports = connect(select)(RecentApplicant);
