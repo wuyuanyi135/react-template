@@ -4,8 +4,10 @@
 
 import * as actions from '../../actions/ImportFormActions.js'
 import { connect } from 'react-redux';
-import React from 'react';
+import React, {Component} from 'react';
+import _ from 'lodash';
 import {
+    Button,
     FormControl,
     ControlLabel,
     FormGroup,
@@ -13,72 +15,57 @@ import {
     InputGroup
 } from 'react-bootstrap';
 
-function ApplicantPanel(props) {
+const ApplicantEntry = connect()((props) => {
     const dispatch = props.dispatch;
-    const applicant = props.applicant;
-    const applicantPinyin = props.applicantPinyin;
-    const department = props.department;
-    const departmentPinyin = props.departmentPinyin;
+    const index = props.index;
+    return (
+        <div>
+            <FormGroup>
+                <ControlLabel>申请人</ControlLabel>
+                <Button
+                  bsStyle="link"
+                  onClick={() => dispatch(actions.removeApplicant(index))}
+                >删除</Button>
+                <InputGroup>
+                    <InputGroup.Addon>姓名</InputGroup.Addon>
+                    <FormControl
+                      type="text"
+                      placeholder="Applicant"
+                      value={props.applicant}
+                      onChange={e => dispatch(actions.changeApplicantName(e.target.value, index))}
+                    />
+                    <InputGroup.Addon>科室</InputGroup.Addon>
+                    <FormControl
+                      type="text"
+                      placeholder="Departement"
+                      value={props.department}
+                      onChange={e => dispatch(
+                          actions.changeApplicantDepartment(e.target.value, index)
+                      )}
+                    />
+                </InputGroup>
+            </FormGroup>
+        </div>
+    );
+});
+const ApplicantPanel = (props) => {
+    const dispatch = props.dispatch;
+    const applicantData = props.applicant.toArray();
     return (
         <Panel header="申请人信息">
             <div className="form-panel-content">
-                <FormGroup>
-                    <ControlLabel>申请人</ControlLabel>
-                    <InputGroup>
-                        <FormControl
-                          type="text"
-                          placeholder="Applicant"
-                          value={applicant}
-                          onChange={e => dispatch(actions.changeApplicantName(e.target.value))}
-                        />
-                        <InputGroup.Addon>拼音</InputGroup.Addon>
-                        <FormControl
-                          type="text"
-                          placeholder="Applicant Pinyin"
-                          value={applicantPinyin}
-                          tabIndex="-1"
-                          onChange={e => dispatch(
-                              actions.changeApplicantNamePinyin(e.target.value)
-                          )}
-                        />
-                    </InputGroup>
-                </FormGroup>
-                <FormGroup>
-                    <ControlLabel>科室</ControlLabel>
-                    <InputGroup>
-                        <FormControl
-                          type="text"
-                          placeholder="Departement"
-                          value={department}
-                          onChange={e => dispatch(
-                              actions.changeApplicantDepartment(e.target.value)
-                          )}
-                        />
-                        <InputGroup.Addon>拼音</InputGroup.Addon>
-                        <FormControl
-                          type="text"
-                          placeholder="Departement Pinyin"
-                          value={departmentPinyin}
-                          tabIndex="-1"
-                          onChange={e => dispatch(
-                              actions.changeApplicantDepartmentPinyin(e.target.value)
-                          )}
-                        />
-                    </InputGroup>
-                </FormGroup>
+                {applicantData.map((item, index) =>
+                    <ApplicantEntry {...item} key={index} index={index} />
+                )}
+                <Button
+                    block
+                    onClick={e => dispatch(actions.addNewApplicant())}>
+                    新增申请人
+                </Button>
             </div>
         </Panel>
     );
 }
 
-
-function select(state) {
-    const data = state.importForm.applicant;
-    return {
-        department: data.department,
-        departmentPinyin: data.departmentPinyin,
-        applicant: data.applicant,
-        applicantPinyin: data.applicantPinyin
-    };
-}
-module.exports = connect(select)(ApplicantPanel);
+// connect to get dispatch method.
+export default connect()(ApplicantPanel);

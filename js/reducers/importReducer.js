@@ -1,7 +1,8 @@
 import * as constants from '../constants/AppConstants';
 import assignToEmpty from '../utils/assign';
+import { List } from 'immutable';
 import _ from 'lodash';
-const initialState = {
+export const initialState = {
     data: {
         pmid: '',
         authors: '',
@@ -14,12 +15,7 @@ const initialState = {
         publicationTypes: [],
         selectedPublicationTypes: ''
     },
-    applicant: {
-        department: '',
-        applicant: '',
-        departmentPinyin: '',
-        applicantPinyin: ''
-    },
+    applicant: new List(),
     isLoading: false
 };
 
@@ -56,18 +52,33 @@ function importReducer(state = initialState, action) {
 
     case constants.CHANGE_IMPORT_FORM_ARTICLE_TITLE:
         return _.merge({}, state, { data: { articleTitle: action.title } });
+
     // Applicant
+    case constants.ADD_NEW_APPLICANT:
+        return _.assign({}, state, { applicant: state.applicant.push(action.applicant) });
+
+    case constants.REMOVE_APPLICANT:
+        return _.assign({}, state, { applicant: state.applicant.remove(action.index) });
+
     case constants.CHANGE_IMPORT_FORM_APPLICANT_NAME:
-        return _.merge({}, state, { applicant: { applicant: action.name } });
+        return _.merge({}, state, {
+            applicant: state.applicant.update(action.index, item => ({ ...item, applicant: action.name }))
+        });
 
     case constants.CHANGE_IMPORT_FORM_APPLICANT_NAME_PINYIN:
-        return _.merge({}, state, { applicant: { applicantPinyin: action.applicantPinyin } });
+        return _.merge({}, state, {
+            applicant: state.applicant.update(action.index, item => ({ ...item, applicantPinyin: action.applicantPinyin }))
+        });
 
     case constants.CHANGE_IMPORT_FORM_APPLICANT_DEPARTMENT:
-        return _.merge({}, state, { applicant: { department: action.department } });
+        return _.merge({}, state, {
+            applicant: state.applicant.update(action.index, item => ({ ...item, department: action.department }))
+        });
 
     case constants.CHANGE_IMPORT_FORM_APPLICANT_DEPARTMENT_PINYIN:
-        return _.merge({}, state, { applicant: { departmentPinyin: action.departmentPinyin } });
+        return _.merge({}, state, {
+            applicant: state.applicant.update(action.index, item => ({ ...item, departmentPinyin: action.departmentPinyin }))
+        });
 
     case constants.CHANGE_IMPORT_FORM_SELECTED_PT:
         return _.merge({}, state, { data: { selectedPublicationTypes: action.pt } });

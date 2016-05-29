@@ -6,7 +6,6 @@
  *
  */
 import * as actions from '../../actions/ImportFormActions.js';
-import { connect } from 'react-redux';
 import React from 'react';
 import {
     Button,
@@ -18,6 +17,7 @@ import {
     InputGroup
 } from 'react-bootstrap';
 import { PulseLoader } from 'halogen';
+import { connect } from 'react-redux';
 
 const PMIDPanel = (props) => {
     const pmid = props.pmid;
@@ -41,14 +41,6 @@ const PMIDPanel = (props) => {
                               }
                           }}
                         />
-
-                            {
-                                isLoading ? (
-                                    <FormControl.Feedback>
-
-                                    </FormControl.Feedback>
-                                ) : null
-                            }
                     </FormGroup>
 
                     <InputGroup.Button>
@@ -75,14 +67,4 @@ const PMIDPanel = (props) => {
     );
 };
 
-PMIDPanel.propTypes = {
-    pmid: React.PropTypes.string
-};
-
-function select(state) {
-    return {
-        pmid: state.importForm.data.pmid,
-        isLoading: state.importForm.isLoading
-    };
-}
-module.exports = connect(select)(PMIDPanel);
+module.exports = connect()(PMIDPanel);

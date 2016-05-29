@@ -104,50 +104,67 @@ export function changeSource(text) {
 
 
 /* Applicant section */
-export function changeApplicantName(name) {
-    return dispatch => {
-        const namePinyin = pinyin(name).reduce((p, c) => `${p} ${c}`, '');
-        dispatch(changeApplicantNamePinyin(namePinyin));
-        dispatch({
-            type: constants.CHANGE_IMPORT_FORM_APPLICANT_NAME,
-            name
-        });
+export function addNewApplicant(applicant = constants.INIT_APPLICANT) {
+    return {
+        type: constants.ADD_NEW_APPLICANT,
+        applicant
+    };
+}
+export function removeApplicant(index) {
+    return {
+        type: constants.REMOVE_APPLICANT,
+        index
     };
 }
 
-export function changeApplicantNamePinyin(applicantPinyin) {
+export function changeApplicantNamePinyin(applicantPinyin, index) {
     return {
         type: constants.CHANGE_IMPORT_FORM_APPLICANT_NAME_PINYIN,
-        applicantPinyin
+        applicantPinyin,
+        index
     };
 }
 
-export function changeApplicantDepartmentPinyin(departmentPinyin) {
-    return {
-        type: constants.CHANGE_IMPORT_FORM_APPLICANT_DEPARTMENT_PINYIN,
-        departmentPinyin
-    };
-}
-
-export function changeApplicantDepartment(department) {
+export function changeApplicantName(name, index) {
     return dispatch => {
-        const dpPinyin = pinyin(department).reduce((p, c) => `${p} ${c}`, '');
-        dispatch(changeApplicantDepartmentPinyin(dpPinyin));
+        const namePinyin = pinyin(name).reduce((p, c) => `${p} ${c}`, '');
+        dispatch(changeApplicantNamePinyin(namePinyin, index));
         dispatch({
-            type: constants.CHANGE_IMPORT_FORM_APPLICANT_DEPARTMENT,
-            department
+            type: constants.CHANGE_IMPORT_FORM_APPLICANT_NAME,
+            name,
+            index
         });
     };
 }
 
-export function changeISSNSelection (issn) {
+export function changeApplicantDepartmentPinyin(departmentPinyin, index) {
+    return {
+        type: constants.CHANGE_IMPORT_FORM_APPLICANT_DEPARTMENT_PINYIN,
+        departmentPinyin,
+        index
+    };
+}
+
+export function changeApplicantDepartment(department, index) {
+    return dispatch => {
+        const dpPinyin = pinyin(department).reduce((p, c) => `${p} ${c}`, '');
+        dispatch(changeApplicantDepartmentPinyin(dpPinyin, index));
+        dispatch({
+            type: constants.CHANGE_IMPORT_FORM_APPLICANT_DEPARTMENT,
+            department,
+            index
+        });
+    };
+}
+
+export function changeISSNSelection(issn) {
     return {
         type: constants.CHANGE_IMPORT_FORM_SELECTED_ISSN,
         issn
     };
 }
 
-export function changePTSelection (pt) {
+export function changePTSelection(pt) {
     return {
         type: constants.CHANGE_IMPORT_FORM_SELECTED_PT,
         pt
@@ -173,12 +190,12 @@ export function submitImportFormAsync(data) {
             data: JSON.stringify(data)
         })
         .then((value) => {
-            console.log("Created documents", value);
-            dispatch(actions.addDefaultNotification("导入成功!", 5000));
+            console.log('Created documents', value);
+            dispatch(actions.addDefaultNotification('导入成功!', 5000));
         })
         .fail((error) => {
-            console.log("Create failed", error);
+            console.log('Create failed', error);
             dispatch(actions.addWarningNotification(`导入失败: ${JSON.parse(error.responseText).message}`, 5000));
-        })
-    }
+        });
+    };
 }

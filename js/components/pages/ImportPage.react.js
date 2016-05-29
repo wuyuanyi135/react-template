@@ -1,27 +1,50 @@
-import {changeTest} from '../../actions/AppActions';
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {Alert, Button, Nav, NavItem, Navbar, NavDropdown, MenuItem} from 'react-bootstrap';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Button } from 'react-bootstrap';
 import EntryForm from '../components/EntryForm.react.js';
+import * as actions from '../../actions/ImportFormActions.js';
+import _ from 'lodash';
 
+const validateForm = (data) => (
+    _.every([
+        data.authors,
+        // data.pmid,
+        data.selectedISSN,
+        data.selectedPublicationTypes,
+        data.selectedAffiliation,
+        data.source,
+        data.articleTitle
+    ])
+);
 
 class ImportPage extends Component {
+    componentDidMount() {
+        this.props.dispatch(actions.setImportFormState());  // clear texts
+    }
     render() {
-        var data = {"pmid":"1233485","dateCreated":{"Year":"1976","Month":"11","Day":"21"},"dateCompleted":{"Year":"1976","Month":"11","Day":"21"},"dateRevised":{"Year":"2013","Month":"11","Day":"21"},"issn":"0302-7600","issnType":null,"journalTitle":"Praktische Anästhesie, Wiederbelebung und Intensivtherapie","journalAbbr":"Prakt Anaesth","articleTitle":"[The effect of ketamine on haemodynamics and myocardial oxygen consumption in anaesthetized dogs (author's transl)].","authors":[{"name":"Patschke D","lastName":"Patschke","foreName":"D","collectiveName":null,"affiliation":null},{"name":"Brückner JB","lastName":"Brückner","foreName":"J B","collectiveName":null,"affiliation":null},{"name":"Gethmann JW","lastName":"Gethmann","foreName":"J W","collectiveName":null,"affiliation":null},{"name":"Tarnow J","lastName":"Tarnow","foreName":"J","collectiveName":null,"affiliation":null},{"name":"Weymar A","lastName":"Weymar","foreName":"A","collectiveName":null,"affiliation":null}],"publicationTypes":["English Abstract","Journal Article"]};
-
-        return(
+        const props = this.props;
+        return (
             <div>
                 <h1>导入</h1>
-                <EntryForm data={data}></EntryForm>
+                <EntryForm />
+                <Button
+                  bsStyle="primary"
+                  className="import-form-submit"
+                  disabled={!validateForm(props.data)}
+                  onClick={() => props.dispatch(actions.submitImportFormAsync(props.frm))}
+                >
+                    添加条目
+                </Button>
             </div>
         );
     }
 }
 
 function select(state) {
-  return {
-    data: state
-  };
+    return {
+        data: state.importForm.data,
+        frm: state.importForm
+    };
 }
 
 export default connect(select)(ImportPage);

@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { Glyphicon, Media } from 'react-bootstrap';
 import * as actions from '../../actions/AppActions.js';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import _ from 'lodash';
 
 class RecentApplicant extends Component {
@@ -19,9 +19,10 @@ class RecentApplicant extends Component {
                         <span>最近申请人</span>
                         <span>
                             <Glyphicon
-                                className="header-refresh-icon"
-                                glyph="refresh"
-                                onClick={()=>dispatch(actions.fetchRecentApplicant())}/>
+                              className="header-refresh-icon"
+                              glyph="refresh"
+                              onClick={() => dispatch(actions.fetchRecentApplicant())}
+                            />
                         </span>
                     </h2>
                 </div>
@@ -34,10 +35,13 @@ class RecentApplicant extends Component {
                         return (
                             <Media key={index}>
                                 <Media.Body>
-                                    <Media.Heading componentClass='h4'>
+                                    <Media.Heading componentClass="h4">
                                         {`${item.department} ${item.applicant}`}
                                     </Media.Heading>
-                                    <p>{`PMID: ${item.pmid}`}</p>
+                                    {item.pmid ?
+                                        <p>{`PMID: ${item.pmid}`}</p> :
+                                        <p>{`Title: ${item._populate.articleTitle}`}</p>
+                                    }
                                 </Media.Body>
                             </Media>
                         );

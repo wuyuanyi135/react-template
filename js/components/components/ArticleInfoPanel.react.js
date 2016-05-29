@@ -19,12 +19,13 @@ const handlePTButtonClick = (e, dispatch) => {
 const ArticleInfoPanel = (props) => {
     const dispatch = props.dispatch;
 
-    const source = props.source;
-    const issn = props.issn;
-    const selectedISSN = props.selectedISSN;
-    const selectedPT = props.selectedPublicationTypes;
-    const articleTitle = props.articleTitle;
-    const pt = Object.assign([], props.pt);
+    const data = props;
+    const source = data.source;
+    const issn = data.issn;
+    const selectedISSN = data.selectedISSN;
+    const selectedPT = data.selectedPublicationTypes;
+    const articleTitle = data.articleTitle;
+    const pt = Object.assign([], data.pt);
     return (
         <Panel header="文献信息" className="author-panel form-panel">
             <div className="form-panel-content">
@@ -110,15 +111,4 @@ const ArticleInfoPanel = (props) => {
     );
 };
 
-function select(state) {
-    var data = state.importForm.data;
-    return {
-        source: data.source,
-        issn: data.issn,
-        selectedISSN: data.selectedISSN,
-        pt: data.publicationTypes,
-        articleTitle: data.articleTitle,
-        selectedPublicationTypes: data.selectedPublicationTypes
-    };
-}
-module.exports = connect(select)(ArticleInfoPanel);
+module.exports = connect()(ArticleInfoPanel);

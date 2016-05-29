@@ -1,7 +1,9 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { Glyphicon, Media } from 'react-bootstrap';
 import * as actions from '../../actions/AppActions.js';
-import {connect} from 'react-redux';
+import * as indexActions from '../../actions/IndexActions.js';
+
+import { connect } from 'react-redux';
 import _ from 'lodash';
 
 class RecentImport extends Component {
@@ -32,9 +34,12 @@ class RecentImport extends Component {
                             return null;
                         }
                         return (
-                            <Media key={index}>
+                            <Media
+                              key={index}
+                              onClick={() => dispatch(indexActions.displayArticleDialog(item._id))}
+                            >
                                 <Media.Body>
-                                    <Media.Heading componentClass='h4'>
+                                    <Media.Heading componentClass="h4">
                                         {item.articleTitle}
                                     </Media.Heading>
                                     <p>{`PMID: ${item.pmid}`}</p>
@@ -49,10 +54,8 @@ class RecentImport extends Component {
     }
 }
 
-const select = (state) => {
-    return {
-        recentImport: state.home.recentImport
-    };
-};
+const select = (state) => ({
+    recentImport: state.home.recentImport
+});
 
 module.exports = connect(select)(RecentImport);

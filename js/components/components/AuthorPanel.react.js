@@ -13,9 +13,11 @@ import _ from 'lodash';
 
 const AuthorPanel = (props) => {
     const dispatch = props.dispatch;
-    const authors = props.authors;
-    const affiliation = props.affiliation ? props.affiliation : [];
-    const selectedAffiliation = props.selectedAffiliation;
+
+    const data = props;
+    const authors = data.authors;
+    const affiliation = data.affiliation ? data.affiliation : [];
+    const selectedAffiliation = data.selectedAffiliation;
     return (
         <Panel header="作者" className="author-panel form-panel">
             <FormGroup
@@ -64,12 +66,4 @@ const AuthorPanel = (props) => {
     );
 };
 
-
-function select(state) {
-    return {
-        authors: state.importForm.data.authors,
-        affiliation: state.importForm.data.affiliation,
-        selectedAffiliation: state.importForm.data.selectedAffiliation
-    };
-}
-module.exports = connect(select)(AuthorPanel);
+module.exports = connect()(AuthorPanel);

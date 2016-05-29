@@ -8,12 +8,11 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Logo from '../../img/logo.png';
-import { Nav, NavItem, Navbar, NavDropdown, MenuItem } from 'react-bootstrap';
-import {AutoAffix} from 'react-overlays';
-import {NotificationStack} from 'react-notification';
-
-import * as actions from "../actions/AppActions.js";
+import { Nav, NavItem, Navbar, MenuItem } from 'react-bootstrap';
+import { AutoAffix } from 'react-overlays';
+import { NotificationStack } from 'react-notification';
+import { push } from 'react-router-redux';
+import { removeNotification } from '../actions/AppActions.js';
 class App extends Component {
 
     render() {
@@ -23,7 +22,7 @@ class App extends Component {
             <div>
                 <div className="header">
                   <AutoAffix container={this} affixClassName="nav-affix">
-                      {this.getNavBar()}
+                      {this.getNavBar(dispatch)}
                   </AutoAffix>
                 </div>
                 <div className="wrapper">
@@ -31,31 +30,24 @@ class App extends Component {
                 </div>
                     <NotificationStack
                         notifications={notifications.toArray()}
-                        onDismiss={(notification) => dispatch(actions.removeNotification(notification))}/>
+                        onDismiss={(notification) => dispatch(removeNotification(notification))}/>
             </div>
         );
     }
 
-    getNavBar() {
+    getNavBar(dispatch) {
         return (
             <Navbar>
                 <Navbar.Header>
                     <Navbar.Brand>
-                        <a href="/">ezDoc</a>
+                        <a onClick={() => dispatch(push('/'))}>ezDoc</a>
                     </Navbar.Brand>
                     <Navbar.Toggle />
                 </Navbar.Header>
                 <Navbar.Collapse>
                     <Nav>
-                        <NavItem eventKey={1} href="/">索引</NavItem>
-                        <NavItem eventKey={2} href="/import">录入</NavItem>
-                        <NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
-                            <MenuItem eventKey={3.1}>Action</MenuItem>
-                            <MenuItem eventKey={3.2}>Another action</MenuItem>
-                            <MenuItem eventKey={3.3}>Something else here</MenuItem>
-                            <MenuItem divider />
-                            <MenuItem eventKey={3.3}>Separated link</MenuItem>
-                        </NavDropdown>
+                        <NavItem eventKey={1} onClick={() => dispatch(push('/'))}>索引</NavItem>
+                        <NavItem eventKey={2} onClick={() => dispatch(push('/import'))}>录入</NavItem>
                     </Nav>
                     <Nav pullRight>
                         <NavItem eventKey={1} href="#">Link Right</NavItem>

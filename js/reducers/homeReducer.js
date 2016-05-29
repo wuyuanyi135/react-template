@@ -15,17 +15,18 @@
 
 import * as constants from '../constants/AppConstants';
 import assignToEmpty from '../utils/assign';
-import {OrderedSet} from 'immutable';
+import { OrderedSet } from 'immutable';
 import _ from 'lodash';
 const initialState = {
-  notifications: OrderedSet(),
-  recentImport: [],
-  recentApplicant: []
+    notifications: new OrderedSet(),
+    recentImport: [],
+    recentApplicant: [],
+    displayDialog: false
 };
 
 function homeReducer(state = initialState, action) {
-  Object.freeze(state); // Don't mutate state directly, always use assign()!
-  switch (action.type) {
+    Object.freeze(state); // Don't mutate state directly, always use assign()!
+    switch (action.type) {
     case constants.ADD_NOTIFICATION:
         return assignToEmpty(state, {
             notifications: state.notifications.add(action.notification)
@@ -43,10 +44,17 @@ function homeReducer(state = initialState, action) {
     case constants.UPDATE_RECENT_APPLICANT:
         return _.assign({}, state, {
             recentApplicant: action.recentApplicant
-        }); 
+        });
+
+    // Dialog
+    case constants.DISPLAY_DIALOG:
+        return _.assign({}, state, {
+            displayDialog: action.display
+        });
+
     default:
-      return state;
-  }
+        return state;
+    }
 }
 
 export default homeReducer;

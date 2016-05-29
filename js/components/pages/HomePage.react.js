@@ -3,49 +3,49 @@
  * This is the first thing users see of our App
  */
 
-import {changeTest} from '../../actions/AppActions';
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {Link} from 'react-router';
-import {Button, FormControl, FormGroup, InputGroup, Grid, Row, Col} from 'react-bootstrap';
-import {push} from 'react-router-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Grid, Row, Col } from 'react-bootstrap';
 import RecentImport from '../components/RecentImport.react.js';
-import RecentApplicant from  '../components/RecentApplicant.react.js';
+import RecentApplicant from '../components/RecentApplicant.react.js';
 import SearchBar from '../components/SearchBar.react.js';
+import DetailDialog from '../components/DetailDialog.react.js';
+import * as indexActions from '../../actions/IndexActions.js';
+import * as importActions from '../../actions/ImportFormActions.js';
+
 class HomePage extends Component {
-  render() {
-    const dispatch = this.props.dispatch;
+    render() {
+        const dispatch = this.props.dispatch;
+        const show = this.props.show;
+        return (
+            <div>
+                <h1>搜索</h1>
+                <SearchBar onSelect={(arg) => dispatch(indexActions.displayArticleDialog(arg.suggestion.original._id))}/>
 
-    return (
-      <div>
-          <h1>搜索</h1>
-          <SearchBar/>
+                <Grid fluid>
+                    <Row>
+                        <Col md={4}>
+                            <RecentImport />
+                        </Col>
+                        <Col md={4}>
+                            <RecentApplicant />
+                        </Col>
+                        <Col md={4}>
 
-          <Grid fluid={true}>
-              <Row>
-                  <Col md={4}>
-                      <RecentImport/>
-                  </Col>
-                  <Col md={4}>
-                      <RecentApplicant/>
-                  </Col>
-                  <Col md={4}>
-
-                  </Col>
-              </Row>
-          </Grid>
-      </div>
-    );
-  }
+                        </Col>
+                    </Row>
+                </Grid>
+                {show ? <DetailDialog /> : null}
+            </div>
+        );
+    }
 }
 
-// REDUX STUFF
 
-// Which props do we want to inject, given the global state?
 function select(state) {
-  return {
-    data: state.homeReducer
-  };
+    return {
+        show: state.home.displayDialog
+    };
 }
 
 // Wrap the component to inject dispatch and state into it
