@@ -1,6 +1,7 @@
 import * as actions from '../../actions/ImportFormActions';
 import { connect } from 'react-redux';
 import React from 'react';
+import SciTable from './SciTable.react.js';
 import {
     Button,
     ButtonGroup,
@@ -26,6 +27,7 @@ const ArticleInfoPanel = (props) => {
     const selectedPT = data.selectedPublicationTypes;
     const articleTitle = data.articleTitle;
     const pt = Object.assign([], data.pt);
+
     return (
         <Panel header="文献信息" className="author-panel form-panel">
             <div className="form-panel-content">
@@ -104,7 +106,9 @@ const ArticleInfoPanel = (props) => {
                 </FormGroup>
                 <FormGroup>
                     <ControlLabel>分区/SCI</ControlLabel>
-                    <div><Button>自动获取</Button></div>
+
+                    <SciTable></SciTable>
+
                 </FormGroup>
             </div>
         </Panel>

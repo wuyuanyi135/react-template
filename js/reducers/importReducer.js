@@ -13,6 +13,7 @@ export const initialState = {
         issn: [],
         selectedISSN: '',
         publicationTypes: [],
+        sci: [],
         selectedPublicationTypes: '',
         applicant: new List()
     },
@@ -96,6 +97,8 @@ function importReducer(state = initialState, action) {
     case constants.CHANGE_IMPORT_FORM_SELECTED_ISSN:
         return _.merge({}, state, { data: { selectedISSN: action.issn } });
 
+    case constants.UPDATE_SCI_TABLE:
+        return _.merge({}, state, { data: { sci: action.sci } });
     default:
         return state;
     }

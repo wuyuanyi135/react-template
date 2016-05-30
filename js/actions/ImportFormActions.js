@@ -182,6 +182,32 @@ export function changeArticleTitle(title) {
     };
 }
 
+export function updateSciTable(sci) {
+    return {
+        type: constants.UPDATE_SCI_TABLE,
+        sci
+    };
+}
+
+
+export function updateSci(issn) {
+    return dispatch => {
+        reqwest({
+            url: `/api/sci/${issn}`,
+            method: 'get'
+        })
+        .then((value) => {
+            console.log('Fetched SCI', value);
+            dispatch(actions.addDefaultNotification('获取成功', 3000));
+            dispatch(updateSciTable(JSON.parse(value.result)));
+        })
+        .fail((error) => {
+            console.log('Failed Fetching SCI', error);
+            dispatch(actions.addWarningNotification('获取失败',3000));
+        })
+    }
+}
+
 /* submit import form */
 export function submitImportFormAsync(data) {
     return (dispatch) => {

@@ -3,7 +3,7 @@
 @charset 'UTF-8';
 
 /* 1. Vendors */
-@import 'vendor/_normalize.css';
+/*@import 'vendor/_normalize.css';*/
 
 /* 2. Configuration and helpers */
 /*@import 'utils/*.css';*/
