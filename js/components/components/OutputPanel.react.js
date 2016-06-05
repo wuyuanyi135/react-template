@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { updateFormData } from '../../actions/IndexActions.js';
+import * as exportActions from '../../actions/exportActions.js';
 import _ from 'lodash';
 import {
     Button,
     ButtonGroup,
-    HelpBlock,
     ControlLabel,
     FormGroup,
     Panel,
@@ -16,37 +16,59 @@ import {
 class OutputPanel extends Component {
     constructor() {
         super();
-        this.state = {
-            selected: {}
-        };
+        this.state = {};
     }
     componentWillMount() {
-        this.setState({ selected: this.props.applicants.toArray()[0] });
+        // select the first data as default
+        this.props.dispatch(
+            exportActions.changeApplicantSelection(this.props.applicants.toArray()[0])
+        );
+        this.props.dispatch(
+            exportActions.changeSciSelection(this.props.sci[0])
+        );
     }
-    componentWillReceiveProps(nextProps) {
-        this.setState({ selected: nextProps.applicants.toArray()[0] });
-    }
+
     updateButtonHandler() {
         this.props.dispatch(updateFormData(this.props.id));
     }
+
+    computeApplicantText(selectedApplicant) {
+        return selectedApplicant ? `姓名: ${selectedApplicant.applicant} 科室: ${selectedApplicant.department}` : '请添加申请人';
+    }
+    computeSciText(selectedSci) {
+        return selectedSci ? `年份: ${selectedSci.year} IF: ${selectedSci.impact} 分区: ${selectedSci.section}` : '请添加SCI';
+    }
     render() {
         const props = this.props;
+        const { id, sci, selectedApplicant, selectedSci, dispatch } = props;
         const applicants = props.applicants.toArray();
-        const id = props.id;
-        const selected = this.state.selected;
-        const selectedText = selected ? `姓名: ${selected.applicant} 科室: ${selected.department}` : '请添加申请人';
+        const selectedApplicantText = this.computeApplicantText(selectedApplicant);
+        const selectedSciText = this.computeSciText(selectedSci);
         return (
             <Panel header="打印 修改 ">
                 <FormGroup className="form-panel-content">
-                    <HelpBlock>id: {id}</HelpBlock>
                     <ControlLabel className="controllabel-blk">打印申请人</ControlLabel>
-                    <DropdownButton title={selectedText} id="applicantSelector">
+                    <DropdownButton title={selectedApplicantText} id="applicantSelector">
                         {_.castArray(applicants).map((item, index) => (
                             item ?
                                 <MenuItem
                                   key={index}
-                                  onClick={() => this.setState({ selected: item })}
-                                >姓名: {item.applicant} 科室: {item.department}
+                                  onClick={() => dispatch(exportActions.changeApplicantSelection(item))}
+                                >
+                                    {this.computeApplicantText(item)}
+                                </MenuItem> : null
+                        ))}
+                    </DropdownButton>
+                </FormGroup>
+                <FormGroup className="form-panel-content">
+                    <ControlLabel className="controllabel-blk">选择SCI</ControlLabel>
+                    <DropdownButton title={selectedSciText} id="sciSelector">
+                        {_.castArray(sci).map((item, index) => (
+                            item ?
+                                <MenuItem
+                                  key={index}
+                                  onClick={() => dispatch(exportActions.changeSciSelection(item))}
+                                >{this.computeSciText(item)}
                                 </MenuItem> : null
                         ))}
                     </DropdownButton>
@@ -54,7 +76,7 @@ class OutputPanel extends Component {
                 <FormGroup className="form-panel-content">
                     <ButtonGroup block vertical>
                         <Button bsStyle="info" onClick={() => this.updateButtonHandler()}>保存变更</Button>
-                        <Button>输出打印文档</Button>
+                        <Button onClick={() => dispatch(exportActions.exportPrintPage())}>输出打印文档</Button>
                     </ButtonGroup>
 
                 </FormGroup>
@@ -66,6 +88,9 @@ class OutputPanel extends Component {
 
 const select = (state) => ({
     applicants: state.importForm.data.applicant,
-    id: state.importForm.data._id
+    sci: state.importForm.data.sci,
+    id: state.importForm.data._id,
+    selectedApplicant: state.exportForm.selectedApplicant,
+    selectedSci: state.exportForm.selectedSci
 });
 export default connect(select)(OutputPanel);

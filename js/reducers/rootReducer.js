@@ -8,11 +8,13 @@ import importReducer from './importReducer';
 // Replace line below once you have several reducers with
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
+import { exportReducer } from './exportReducer.js';
 const rootReducer = combineReducers({
-    home:homeReducer,
-    importForm:importReducer,
+    home: homeReducer,
+    importForm: importReducer,
+    exportForm: exportReducer,
     routing: routerReducer
-})
+});
 // const rootReducer = {homeReducer};
 
 export default rootReducer;

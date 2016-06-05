@@ -20,6 +20,7 @@ class DetailDialog extends Component {
         const dispatch = props.dispatch;
         return (
             <div>
+
                 <Modal
                   show={show}
                   onHide={() => {
@@ -32,6 +33,7 @@ class DetailDialog extends Component {
                     <Modal.Body>
                         <OutputPanel />
                         <EntryForm />
+                        <OutputPanel />
                     </Modal.Body>
                 </Modal>
             </div>

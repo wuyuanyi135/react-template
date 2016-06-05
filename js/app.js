@@ -8,11 +8,28 @@
  */
 
 // Load the ServiceWorker, the Cache polyfill, the manifest.json file and the .htaccess file
-import './jsimport';
+
 import 'file?name=[name].[ext]!../serviceworker.js';
 import 'file?name=[name].[ext]!../manifest.json';
 import 'file?name=[name].[ext]!../.htaccess';
-
+import 'jquery/src/jquery.js';
+// require ('jquery/dist/jquery.min.js');
+import './bootstrap.js';
+$.fn.serializeObject = function () {
+    const o = {};
+    const a = this.serializeArray();
+    $.each(a, function () {
+        if (o[this.name]) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+    return o;
+};
 // // Check for ServiceWorker support before trying to install it
 // if ('serviceWorker' in navigator) {
 //   navigator.serviceWorker.register('/serviceworker.js').then(() => {
@@ -42,15 +59,16 @@ const openSansObserver = new FontFaceObserver('Open Sans', {});
 
 // When Open Sans is loaded, add the js-open-sans-loaded class to the body
 openSansObserver.check().then(() => {
-  document.body.classList.add('js-open-sans-loaded');
+    document.body.classList.add('js-open-sans-loaded');
 }, () => {
-  document.body.classList.remove('js-open-sans-loaded');
+    document.body.classList.remove('js-open-sans-loaded');
 });
 
 // Import the pages
 import HomePage from './components/pages/HomePage.react';
 import ReadmePage from './components/pages/ReadmePage.react';
 import NotFoundPage from './components/pages/NotFound.react';
+import PrintPage from './components/pages/Print.react.js';
 import ImportPage from './components/pages/ImportPage.react';
 import App from './components/App.react';
 
@@ -79,26 +97,27 @@ const store = createStore(
 // Make reducers hot reloadable, see http://stackoverflow.com/questions/34243684/make-redux-reducers-and-other-non-components-hot-loadable
 if (module.hot) {
     module.hot.accept('./reducers/rootReducer', () => {
-      const nextRootReducer = require('./reducers/rootReducer').default;
-      store.replaceReducer(nextRootReducer);
-  });
+        const nextRootReducer = require('./reducers/rootReducer').default;
+        store.replaceReducer(nextRootReducer);
+    });
 }
 
 // useRouterHistory accomodate react-router 2.x
-const history = useRouterHistory( () => syncHistoryWithStore(browserHistory, store) )();
+const history = useRouterHistory(() => syncHistoryWithStore(browserHistory, store))();
 
 // Mostly boilerplate, except for the Routes. These are the pages you can go to,
 // which are all wrapped in the App component, which contains the navigation etc
 ReactDOM.render(
-  <Provider store={store}>
-    <Router history={history}>
-      <Route component={App}>
-        <Route path="/" component={HomePage} />
-        <Route path="/readme" component={ReadmePage} />
-        <Route path="/import" component={ImportPage} />
-        <Route path="*" component={NotFoundPage} />
-      </Route>
-    </Router>
-  </Provider>,
-  document.getElementById('app')
+    <Provider store={store}>
+        <Router history={history}>
+            <Route path="/print" component={PrintPage} />
+            <Route component={App}>
+                <Route path="/" component={HomePage} />
+                <Route path="/readme" component={ReadmePage} />
+                <Route path="/import" component={ImportPage} />
+                <Route path="*" component={NotFoundPage} />
+            </Route>
+        </Router>
+    </Provider>,
+    document.getElementById('app')
 );

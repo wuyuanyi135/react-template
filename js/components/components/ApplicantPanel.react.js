@@ -49,10 +49,11 @@ const ApplicantEntry = connect()((props) => {
     );
 });
 const ApplicantPanel = (props) => {
-    const dispatch = props.dispatch;
-    const applicantData = props.applicant.toArray();
+    const { dispatch, applicant, ...panelProps } = props;
+    const applicantData = applicant.toArray();
+
     return (
-        <Panel header="申请人信息">
+        <Panel {...panelProps} expanded={true} bsStyle="success" header="申请人信息">
             <div className="form-panel-content">
                 {applicantData.map((item, index) =>
                     <ApplicantEntry {...item} key={index} index={index} />

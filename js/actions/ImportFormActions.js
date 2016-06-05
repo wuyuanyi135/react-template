@@ -189,23 +189,36 @@ export function updateSciTable(sci) {
     };
 }
 
+export function changeIsUpdatingSciTableState(state) {
+    return {
+        type: constants.CHANGE_IS_UPDATING_SCI,
+        state
+    };
+}
 
 export function updateSci(issn) {
     return dispatch => {
+        dispatch(changeIsUpdatingSciTableState(true));
         reqwest({
             url: `/api/sci/${issn}`,
             method: 'get'
         })
         .then((value) => {
             console.log('Fetched SCI', value);
-            dispatch(actions.addDefaultNotification('获取成功', 3000));
-            dispatch(updateSciTable(JSON.parse(value.result)));
+            try {
+                dispatch(updateSciTable(JSON.parse(value.result)));
+                dispatch(actions.addDefaultNotification('获取成功', 3000));
+            } catch (e) {
+                dispatch(actions.addWarningNotification('获取失败 数据不正确', 3000));
+                console.log('Failed Fetching SCI', e);
+            }
         })
         .fail((error) => {
             console.log('Failed Fetching SCI', error);
-            dispatch(actions.addWarningNotification('获取失败',3000));
+            dispatch(actions.addWarningNotification('获取失败 连接失败', 3000));
         })
-    }
+        .always(() => dispatch(changeIsUpdatingSciTableState(false)));
+    };
 }
 
 /* submit import form */
