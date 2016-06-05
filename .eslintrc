@@ -3,12 +3,20 @@
     "env": {
         "browser": true,
         "node": true,
-        "mocha": true
+        "mocha": true,
+        "jquery": true
     },
     "ecmaFeatures": {
         "forOf": true,
         "jsx": true,
-        "es6": true
+        "es6": true,
+        "experimentalObjectRestSpread": true
+    },
+    "parser": "babel-eslint",
+    parserOptions: {
+        ecmaFeatures: {
+            experimentalObjectRestSpread: true
+        }
     },
     "rules": {
         "comma-dangle": 0,

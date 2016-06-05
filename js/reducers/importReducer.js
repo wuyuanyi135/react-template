@@ -17,7 +17,7 @@ export const initialState = {
         selectedPublicationTypes: '',
         applicant: new List()
     },
-
+    isUpdatingSciTable: false,
     isLoading: false
 };
 
@@ -97,8 +97,13 @@ function importReducer(state = initialState, action) {
     case constants.CHANGE_IMPORT_FORM_SELECTED_ISSN:
         return _.merge({}, state, { data: { selectedISSN: action.issn } });
 
-    case constants.UPDATE_SCI_TABLE:
-        return _.merge({}, state, { data: { sci: action.sci } });
+    case constants.CHANGE_IS_UPDATING_SCI:
+        return _.assign({}, state, { isUpdatingSciTable: action.state });
+    case constants.UPDATE_SCI_TABLE: {
+        const _state = _.assign({}, state);
+        _state.data.sci = action.sci;
+        return _state;
+    }
     default:
         return state;
     }

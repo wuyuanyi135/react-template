@@ -1,0 +1,53 @@
+@print {
+    size: A4 portrait;
+    margin: 0;
+}
+
+.print-title-container {
+    text-align: center;
+}
+.print-header {
+    font-family: STKaiTi;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.print-subtitle {
+    font-size: 16px;
+    font-family: SimSun;
+    width: auto
+}
+
+.print-page {
+    width: 500px;
+}
+.print-table{
+    width: 90%;
+    margin: auto;
+}
+
+.print-row {
+    display: flex;
+    width: 100%;
+}
+.print-cell {
+
+}
+.print-table  span {
+
+}
+.print-subtitle {
+
+}
+.print-field {
+    font-size: 10.5px;
+    text-align: center;
+}
+.print-label {
+    font-size: 12px;
+    text-align: center;
+
+}
+.print-table-container {
+    font-family: SimSun;
+}

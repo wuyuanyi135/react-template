@@ -12,10 +12,11 @@
 @import 'base/_base.css';
 @import 'base/_bootstrap.css';
 
-
 /* 4. Layout-related sections */
 @import 'layout/_header.css';
 
 /* 5. Components */
 @import 'components/_home.css';
 @import 'components/_entry_form.css';
+@import 'components/_print.css';
+@import 'components/_bs_table.css';
