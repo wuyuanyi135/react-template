@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import { Glyphicon, Media } from 'react-bootstrap';
 import * as actions from '../../actions/AppActions.js';
+import * as applicantDialogActions from '../../actions/ApplicantDialogActions.js';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
 class RecentApplicant extends Component {
-    componentDidMount() {
-        this.props.dispatch(actions.fetchRecent(false));
-    }
     computeRecentApplicant() {
         const recentImport = this.props.recentImport;
         return _(recentImport)
@@ -43,7 +41,7 @@ class RecentApplicant extends Component {
                         }
                         const applicant = item.applicant;
                         return (
-                            <Media key={index}>
+                            <Media key={index} onClick={() => dispatch(applicantDialogActions.displayDialog(true, applicant))}>
                                 <Media.Body>
                                     <Media.Heading componentClass="h4">
                                         {`${applicant.department} ${applicant.applicant}`}

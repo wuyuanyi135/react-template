@@ -7,9 +7,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Grid, Row, Col } from 'react-bootstrap';
 import RecentImport from '../components/RecentImport.react.js';
+import ApplicantDialog from '../components/ApplicantDialog.react.js';
 import RecentApplicant from '../components/RecentApplicant.react.js';
 import SearchBar from '../components/SearchBar.react.js';
 import DetailDialog from '../components/DetailDialog.react.js';
+import RecentExport from '../components/RecentExport.react.js';
 import * as homeActions from '../../actions/AppActions.js';
 import * as indexActions from '../../actions/IndexActions.js';
 import * as importActions from '../../actions/ImportFormActions.js';
@@ -19,8 +21,7 @@ class HomePage extends Component {
         this.props.dispatch(homeActions.fetchRecent(false));
     }
     render() {
-        const dispatch = this.props.dispatch;
-        const show = this.props.show;
+        const { show, showApplicantDialog, who, dispatch } = this.props;
         return (
             <div>
                 <h1>搜索</h1>
@@ -35,11 +36,12 @@ class HomePage extends Component {
                             <RecentApplicant />
                         </Col>
                         <Col md={4}>
-
+                            <RecentExport />
                         </Col>
                     </Row>
                 </Grid>
                 {show ? <DetailDialog /> : null}
+                {showApplicantDialog ? <ApplicantDialog who={who.applicant} /> : null}
             </div>
         );
     }
@@ -48,7 +50,9 @@ class HomePage extends Component {
 
 function select(state) {
     return {
-        show: state.home.displayDialog
+        show: state.home.displayDialog,
+        showApplicantDialog: state.home.displayApplicantDialog,
+        who: state.home.applicantDialogWho
     };
 }
 

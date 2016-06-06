@@ -1,4 +1,6 @@
 import * as constants from '../constants/AppConstants.js';
+import reqwest from 'reqwest';
+
 export function changeApplicantSelection(selection) {
     return {
         type: constants.CHANGE_SELECTED_APPLICANT,
@@ -33,6 +35,13 @@ export function exportPrintPage() {
             section: exportData.selectedSci.section
         };
         const queryString = $.param(query);
+        reqwest({
+            url: '/api/service/history',
+            method: 'post',
+            contentType: 'application/json',
+            type: 'json',
+            data: JSON.stringify({ refId: data._id })
+        });
         window.open(`/print.html?${queryString}`, '_blank');
     };
 }

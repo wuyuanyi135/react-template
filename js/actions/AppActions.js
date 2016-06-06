@@ -80,6 +80,12 @@ export function addWarningNotification(message, timeout) {
         }
     });
 }
+export function updateRecentExport(recentExport) {
+    return {
+        type: constants.UPDATE_RECENT_EXPORT,
+        recentExport
+    };
+}
 
 export function updateRecentImport(newList) {
     return {
@@ -90,6 +96,21 @@ export function updateRecentImport(newList) {
 
 export function fetchRecent(showNotification = true) {
     return dispatch => {
+        reqwest({
+            url: '/api/service/history?$limit=3&$sort[createdAt]=-1',
+            method: 'get',
+        })
+        .then(value => {
+            if (showNotification) {
+                dispatch(addDefaultNotification('最近打印 列表已更新', 3000));
+            }
+            dispatch(updateRecentExport(value));
+        })
+        .fail(err => {
+            dispatch(addWarningNotification('最近打印列表更新失败', 3000));
+            console.error(err);
+        });
+
         reqwest({
             url: '/api/service/entry?$limit=3&$sort[createdAt]=-1',
             method: 'get'
