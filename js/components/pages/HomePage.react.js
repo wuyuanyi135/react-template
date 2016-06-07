@@ -15,17 +15,37 @@ import RecentExport from '../components/RecentExport.react.js';
 import * as homeActions from '../../actions/AppActions.js';
 import * as indexActions from '../../actions/IndexActions.js';
 import * as importActions from '../../actions/ImportFormActions.js';
+import * as applicantDialogActions from '../../actions/ApplicantDialogActions.js';
 
 class HomePage extends Component {
     componentDidMount() {
         this.props.dispatch(homeActions.fetchRecent(false));
+    }
+    handleSuggestionClick(arg) {
+        const { dispatch } = this.props;
+        switch (arg.suggestion.original.suggestionType) {
+        case 'pmid':
+            dispatch(indexActions.displayArticleDialog(arg.suggestion.original._id));
+            break;
+        case 'title':
+            dispatch(indexActions.displayArticleDialog(arg.suggestion.original._id));
+            break;
+        case 'applicant':
+            dispatch(applicantDialogActions.displayDialog(true, arg.suggestion.original));
+            break;
+        default:
+
+        }
+        // (arg) => dispatch(indexActions.displayArticleDialog(arg.suggestion.original._id))
     }
     render() {
         const { show, showApplicantDialog, who, dispatch } = this.props;
         return (
             <div>
                 <h1>搜索</h1>
-                <SearchBar onSelect={(arg) => dispatch(indexActions.displayArticleDialog(arg.suggestion.original._id))}/>
+                <SearchBar
+                  onSelect={arg => this.handleSuggestionClick(arg)}
+                />
 
                 <Grid fluid>
                     <Row>
@@ -41,7 +61,7 @@ class HomePage extends Component {
                     </Row>
                 </Grid>
                 {show ? <DetailDialog /> : null}
-                {showApplicantDialog ? <ApplicantDialog who={who.applicant} /> : null}
+                {showApplicantDialog ? <ApplicantDialog /> : null}
             </div>
         );
     }

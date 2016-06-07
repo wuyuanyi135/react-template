@@ -32,6 +32,7 @@ class RecentImport extends Component {
                         }
                         return (
                             <Media
+                              className="recent-item"
                               key={index}
                               onClick={() => dispatch(indexActions.displayArticleDialog(item._id))}
                             >

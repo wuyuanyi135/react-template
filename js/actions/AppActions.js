@@ -72,7 +72,7 @@ export function addWarningNotification(message, timeout) {
         message,
         key: Date.now(),
         className: 'warning-notification',
-        dismissAfter: timeout,
+        dismissAfter: timeout || 3000,
         barStyle: {
             background: '#ffcc00',
             color: 'black',

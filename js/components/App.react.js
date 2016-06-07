@@ -49,10 +49,6 @@ class App extends Component {
                         <NavItem eventKey={1} onClick={() => dispatch(push('/'))}>索引</NavItem>
                         <NavItem eventKey={2} onClick={() => dispatch(push('/import'))}>录入</NavItem>
                     </Nav>
-                    <Nav pullRight>
-                        <NavItem eventKey={1} href="#">Link Right</NavItem>
-                        <NavItem eventKey={2} href="#">Link Right</NavItem>
-                    </Nav>
                 </Navbar.Collapse>
             </Navbar>
         );

@@ -41,7 +41,7 @@ class RecentApplicant extends Component {
                         }
                         const applicant = item.applicant;
                         return (
-                            <Media key={index} onClick={() => dispatch(applicantDialogActions.displayDialog(true, applicant))}>
+                            <Media className="recent-item" key={index} onClick={() => dispatch(applicantDialogActions.displayDialog(true, applicant))}>
                                 <Media.Body>
                                     <Media.Heading componentClass="h4">
                                         {`${applicant.department} ${applicant.applicant}`}
