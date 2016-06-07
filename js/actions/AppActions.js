@@ -64,7 +64,10 @@ export function addDefaultNotification(message, timeout) {
         message,
         key: Date.now(),
         className: 'default-notification',
-        dismissAfter: timeout
+        dismissAfter: timeout,
+        barStyle: {
+            zIndex: '99999'
+        }
     });
 }
 export function addWarningNotification(message, timeout) {
@@ -76,7 +79,8 @@ export function addWarningNotification(message, timeout) {
         barStyle: {
             background: '#ffcc00',
             color: 'black',
-            fontWeight: 'bold'
+            fontWeight: 'bold',
+            zIndex: '99999'
         }
     });
 }
@@ -96,8 +100,9 @@ export function updateRecentImport(newList) {
 
 export function fetchRecent(showNotification = true) {
     return dispatch => {
+        const count = 5;
         reqwest({
-            url: '/api/service/history?$limit=3&$sort[createdAt]=-1',
+            url: `/api/service/history?$limit=${count}&$sort[createdAt]=-1`,
             method: 'get',
         })
         .then(value => {
@@ -112,7 +117,7 @@ export function fetchRecent(showNotification = true) {
         });
 
         reqwest({
-            url: '/api/service/entry?$limit=3&$sort[createdAt]=-1',
+            url: `/api/service/entry?$limit=${count}&$sort[createdAt]=-1`,
             method: 'get'
         })
         .then(value => {

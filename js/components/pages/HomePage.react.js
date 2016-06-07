@@ -33,6 +33,10 @@ class HomePage extends Component {
         case 'applicant':
             dispatch(applicantDialogActions.displayDialog(true, arg.suggestion.original));
             break;
+        case 'empty':
+            dispatch(importActions.setImportFormState());
+            dispatch(indexActions.displayDialog(true));
+            break;
         default:
 
         }

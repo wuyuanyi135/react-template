@@ -223,14 +223,18 @@ export function updateSci(issn) {
 
 /* submit import form */
 export function submitImportFormAsync(data) {
-    return (dispatch) => {
+    return (dispatch, getState) => {
+        let asset = data;
         // validation has been done by ui
+        if (!asset) {
+            asset = { data: getState().importForm };
+        }
         reqwest({
             type: 'json',
             method: 'post',
             url: '/api/import',
             contentType: 'application/json',
-            data: JSON.stringify(data)
+            data: JSON.stringify(asset)
         })
         .then((value) => {
             console.log('Created documents', value);

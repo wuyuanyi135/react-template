@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { addWarningNotification } from '../../actions/AppActions.js';
 import { updateFormData } from '../../actions/IndexActions.js';
+import { submitImportFormAsync } from '../../actions/ImportFormActions.js';
 import * as exportActions from '../../actions/exportActions.js';
+import { ImportButton } from '../components/ImportButton.react.js';
 import _ from 'lodash';
 import {
     Button,
@@ -40,7 +43,7 @@ class OutputPanel extends Component {
     }
     render() {
         const props = this.props;
-        const { id, sci, selectedApplicant, selectedSci, dispatch } = props;
+        const { id, sci, selectedApplicant, selectedSci, data, dispatch } = props;
         const applicants = props.applicants.toArray();
         const selectedApplicantText = this.computeApplicantText(selectedApplicant);
         const selectedSciText = this.computeSciText(selectedSci);
@@ -75,7 +78,8 @@ class OutputPanel extends Component {
                 </FormGroup>
                 <FormGroup className="form-panel-content">
                     <ButtonGroup block vertical>
-                        <Button bsStyle="info" onClick={() => this.updateButtonHandler()}>保存变更</Button>
+                        {id ? <Button bsStyle="info" onClick={() => this.updateButtonHandler()}>保存变更</Button> : <ImportButton data={data} />}
+                        {id ? <Button bsStyle="danger" onClick={() => dispatch(exportActions.deleteEntry(id))}>删除此条目</Button> : null}
                         <Button onClick={() => dispatch(exportActions.exportPrintPage())}>输出打印文档</Button>
                     </ButtonGroup>
 
@@ -90,6 +94,7 @@ const select = (state) => ({
     applicants: state.importForm.data.applicant,
     sci: state.importForm.data.sci,
     id: state.importForm.data._id,
+    data: state.importForm.data,
     selectedApplicant: state.exportForm.selectedApplicant,
     selectedSci: state.exportForm.selectedSci
 });

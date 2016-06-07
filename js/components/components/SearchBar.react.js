@@ -10,7 +10,21 @@ const fetchSuggestions = (value, context) => {
         url: `/api/suggestion?q=${value}`,
         method: 'get'
     })
-    .then(suggestions => { context.setState({ suggestions }); })
+    .then(suggestions => {
+        if (_.every(suggestions, (item) => item.matching.length === 0)) {
+            context.setState({
+                suggestions: [{
+                    title: '无可用条目',
+                    matching: [{
+                        string: '录入新条目',
+                        original: { suggestionType: 'empty' }
+                    }]
+                }]
+            });
+        } else {
+            context.setState({ suggestions });
+        }
+    })
     .fail(err => { console.log('Suggestion error', err); });
 };
 const throttledFetchSuggestions = _.throttle(fetchSuggestions, 500);

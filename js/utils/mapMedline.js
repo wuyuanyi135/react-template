@@ -1,5 +1,5 @@
 import _ from 'lodash'
-function reduceAuthors(authorList) {
+function reduceAuthors(authorList = {}) {
     if (!authorList.length) {
         return "";
     }

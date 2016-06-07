@@ -7,13 +7,16 @@ import EntryForm from '../components/EntryForm.react.js';
 import { connect } from 'react-redux';
 import * as indexActions from '../../actions/IndexActions.js';
 import * as importActions from '../../actions/ImportFormActions.js';
+import { fetchRecent } from '../../actions/AppActions.js';
 
 class DetailDialog extends Component {
     constructor() {
         super();
         this.state = {};
     }
-
+    componentWillUnmount() {
+        this.props.dispatch(fetchRecent(false));
+    }
     render() {
         const props = this.props;
         const show = props.show;
