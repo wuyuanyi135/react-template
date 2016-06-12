@@ -4,6 +4,7 @@ import PMIDPanel from './PMIDPanel.react';
 import ApplicantPanel from './ApplicantPanel.react.js';
 import AuthorPanel from './AuthorPanel.react';
 import ArticleInfoPanel from './ArticleInfoPanel.react.js';
+import IssnPanel from './IssnPanel.react.js';
 import { connect } from 'react-redux';
 
 const EntryForm = (props) => {
@@ -19,11 +20,13 @@ const EntryForm = (props) => {
     };
     const articleInfoPanelProps = {
         source: data.source,
-        issn: data.issn,
-        selectedISSN: data.selectedISSN,
         selectedPublicationTypes: data.selectedPublicationTypes,
         articleTitle: data.articleTitle,
-        pt: data.pt
+        pt: data.publicationTypes
+    };
+    const IssnPanelProps = {
+        issn: data.issn,
+        selectedISSN: data.selectedISSN
     };
     return (
         <div>
@@ -32,6 +35,7 @@ const EntryForm = (props) => {
                 <PMIDPanel eventKey="1" {...pmidPanelProps} />
                 <AuthorPanel eventKey="2" {...authorPanelProps} />
                 <ArticleInfoPanel eventKey="3" {...articleInfoPanelProps} />
+                <IssnPanel eventKey="4" {...IssnPanelProps} />
             </PanelGroup>
         </div>
     );

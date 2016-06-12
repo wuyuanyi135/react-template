@@ -35,7 +35,6 @@ class PMIDPanel extends Component {
               onMouseLeave={() => this.setState({ expanded: false })}
               expanded={this.state.expanded || this.props.alwaysOn}
               bsStyle="success"
-              header="PMID"
               className="pmid-panel form-panel"
             >
                 <FormGroup className="form-panel-content">

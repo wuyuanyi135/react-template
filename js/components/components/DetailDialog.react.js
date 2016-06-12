@@ -25,16 +25,19 @@ class DetailDialog extends Component {
             <div>
 
                 <Modal
+                  dialogClassName="popup"
                   show={show}
-                  onHide={() => {
-                      dispatch(indexActions.displayDialog(false));
+                  bsSize="large"
+                  onHide={(arg) => {
+                      if (confirm('是否放弃编辑')) {
+                          dispatch(indexActions.displayDialog(false));
+                      }
                   }}
                 >
                     <Modal.Header>
                         <Modal.Title>详情页</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <OutputPanel />
                         <EntryForm />
                         <OutputPanel />
                     </Modal.Body>

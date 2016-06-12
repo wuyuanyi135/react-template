@@ -9,6 +9,9 @@ import _ from 'lodash';
 import {
     Button,
     ButtonGroup,
+    Grid,
+    Row,
+    Col,
     ControlLabel,
     FormGroup,
     Panel,
@@ -48,34 +51,47 @@ class OutputPanel extends Component {
         const selectedApplicantText = this.computeApplicantText(selectedApplicant);
         const selectedSciText = this.computeSciText(selectedSci);
         return (
-            <Panel header="打印 修改 ">
-                <FormGroup className="form-panel-content">
-                    <ControlLabel className="controllabel-blk">打印申请人</ControlLabel>
-                    <DropdownButton title={selectedApplicantText} id="applicantSelector">
-                        {_.castArray(applicants).map((item, index) => (
-                            item ?
-                                <MenuItem
-                                  key={index}
-                                  onClick={() => dispatch(exportActions.changeApplicantSelection(item))}
-                                >
-                                    {this.computeApplicantText(item)}
-                                </MenuItem> : null
-                        ))}
-                    </DropdownButton>
-                </FormGroup>
-                <FormGroup className="form-panel-content">
-                    <ControlLabel className="controllabel-blk">选择SCI</ControlLabel>
-                    <DropdownButton title={selectedSciText} id="sciSelector">
-                        {_.castArray(sci).map((item, index) => (
-                            item ?
-                                <MenuItem
-                                  key={index}
-                                  onClick={() => dispatch(exportActions.changeSciSelection(item))}
-                                >{this.computeSciText(item)}
-                                </MenuItem> : null
-                        ))}
-                    </DropdownButton>
-                </FormGroup>
+            <Panel>
+                <Grid fluid={true}>
+                    <Row>
+                        <Col md={6} sm={12} xs={12}>
+                            <FormGroup className="form-panel-content">
+                                <ControlLabel className="controllabel-blk">打印申请人</ControlLabel>
+                                <ButtonGroup justify block full vertical>
+                                    <DropdownButton noCaret={true} bsSize="small" className="dropdown-full" title={selectedApplicantText} id="applicantSelector">
+                                        {_.castArray(applicants).map((item, index) => (
+                                            item ?
+                                            <MenuItem
+                                                key={index}
+                                                onClick={() => dispatch(exportActions.changeApplicantSelection(item))}
+                                                >
+                                                {this.computeApplicantText(item)}
+                                            </MenuItem> : null
+                                        ))}
+                                    </DropdownButton>
+                                </ButtonGroup>
+                            </FormGroup>
+                        </Col>
+                        <Col md={6}>
+                            <FormGroup className="form-panel-content">
+                                <ControlLabel className="controllabel-blk">选择SCI</ControlLabel>
+                                <ButtonGroup vertical full block>
+                                    <DropdownButton noCaret={true} bsSize="small" className="dropdown-full" title={selectedSciText} id="sciSelector">
+                                        {_.castArray(sci).map((item, index) => (
+                                            item ?
+                                            <MenuItem
+                                                key={index}
+                                                onClick={() => dispatch(exportActions.changeSciSelection(item))}
+                                                >{this.computeSciText(item)}
+                                            </MenuItem> : null
+                                        ))}
+                                    </DropdownButton>
+                                </ButtonGroup>
+                            </FormGroup>
+                        </Col>
+                    </Row>
+                </Grid>
+
                 <FormGroup className="form-panel-content">
                     <ButtonGroup block vertical>
                         {id ? <Button bsStyle="info" onClick={() => this.updateButtonHandler()}>保存变更</Button> : <ImportButton data={data} />}

@@ -43,7 +43,6 @@ class AuthorPanel extends Component {
               onMouseLeave={() => this.setState({ expanded: false })}
               expanded={this.state.expanded || this.props.alwaysOn || validation === 'warning'}
               bsStyle={validation}
-              header="作者"
               className="author-panel form-panel"
             >
                 <FormGroup
@@ -67,6 +66,7 @@ class AuthorPanel extends Component {
                                 .uniq()
                                 .omitBy(_.isNull)
                                 .values()
+                                .take(2)
                                 .value()
                                 .map((aff, index) =>
                                     <ListGroupItem
