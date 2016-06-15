@@ -27,21 +27,21 @@ class OutputPanel extends Component {
     componentWillMount() {
         // select the first data as default
         this.props.dispatch(
-            exportActions.changeApplicantSelection(this.props.applicants.toArray()[0])
+            exportActions.changeApplicantSelection(_.last(this.props.applicants.toArray()))
         );
         this.props.dispatch(
             exportActions.changeSciSelection(this.props.sci[0])
         );
     }
-    componentWillUpdate(nextProps) {
-        // select the first data as default
-        this.props.dispatch(
-            exportActions.changeApplicantSelection(nextProps.applicants.toArray()[0])
-        );
-        this.props.dispatch(
-            exportActions.changeSciSelection(nextProps.sci[0])
-        );
-    }
+    // componentWillUpdate(nextProps) {
+    //     // select the first data as default
+    //     this.props.dispatch(
+    //         exportActions.changeApplicantSelection(_.last(nextProps.applicants.toArray()))
+    //     );
+    //     this.props.dispatch(
+    //         exportActions.changeSciSelection(nextProps.sci[0])
+    //     );
+    // }
 
     updateButtonHandler() {
         this.props.dispatch(updateFormData(this.props.id));
