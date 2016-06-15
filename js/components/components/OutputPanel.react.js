@@ -33,6 +33,15 @@ class OutputPanel extends Component {
             exportActions.changeSciSelection(this.props.sci[0])
         );
     }
+    componentWillUpdate(nextProps) {
+        // select the first data as default
+        this.props.dispatch(
+            exportActions.changeApplicantSelection(nextProps.applicants.toArray()[0])
+        );
+        this.props.dispatch(
+            exportActions.changeSciSelection(nextProps.sci[0])
+        );
+    }
 
     updateButtonHandler() {
         this.props.dispatch(updateFormData(this.props.id));
@@ -96,7 +105,7 @@ class OutputPanel extends Component {
                     <ButtonGroup block vertical>
                         {id ? <Button bsStyle="info" onClick={() => this.updateButtonHandler()}>保存变更</Button> : <ImportButton data={data} />}
                         {id ? <Button bsStyle="danger" onClick={() => dispatch(exportActions.deleteEntry(id))}>删除此条目</Button> : null}
-                        <Button onClick={() => dispatch(exportActions.exportPrintPage())}>输出打印文档</Button>
+                        <Button onClick={() => dispatch(exportActions.exportPrintPage())}>打印并保存</Button>
                     </ButtonGroup>
 
                 </FormGroup>

@@ -131,6 +131,22 @@
                 padding-bottom: 0.2in;
                 padding-right: 0.7in;
             }
+            #button__print {
+                position: fixed;
+                bottom: 60px;
+                right: 30px;
+                padding: 5px 10px 5px 10px;
+                font-size: 24px;
+                border-radius: 10px;
+                border: solid 1px black;
+                background: white;
+            }
+            #button__print:hover {
+                background: #009;
+                color: white;
+                border-color: #950;
+                cursor: pointer;
+            }
             @media print {
 
                 @page {
@@ -153,6 +169,9 @@
                     padding-top: 1.39in;
                     padding-bottom: 1in;
                     border: none;
+                }
+                #button__print {
+                    display: none;
                 }
             }
         </style>
@@ -237,6 +256,9 @@
             </div>
         </div>
 
+        <div id="button__print" onclick="window.print()">
+            打印
+        </div>
         <script type="text/javascript">
             document.querySelector('[contenteditable=true]').onkeydown = (function(e) {
                 // trap the return key being pressed
