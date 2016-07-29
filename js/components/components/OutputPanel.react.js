@@ -22,7 +22,9 @@ import {
 class OutputPanel extends Component {
     constructor() {
         super();
-        this.state = {};
+        this.state = {
+            dropdownClickState: false
+        };
     }
     componentWillMount() {
         // select the first data as default
@@ -33,15 +35,19 @@ class OutputPanel extends Component {
             exportActions.changeSciSelection(this.props.sci[0])
         );
     }
-    // componentWillUpdate(nextProps) {
-    //     // select the first data as default
-    //     this.props.dispatch(
-    //         exportActions.changeApplicantSelection(_.last(nextProps.applicants.toArray()))
-    //     );
-    //     this.props.dispatch(
-    //         exportActions.changeSciSelection(nextProps.sci[0])
-    //     );
-    // }
+    componentWillReceiveProps(nextProps) {
+        // select the first data as default
+        if (this.state.dropdownClickState) {
+            this.setState({ dropdownClickState: false });
+        } else {
+            this.props.dispatch(
+                exportActions.changeApplicantSelection(_.last(nextProps.applicants.toArray()))
+            );
+            this.props.dispatch(
+                exportActions.changeSciSelection(nextProps.sci[0])
+            );
+        }
+    }
 
     updateButtonHandler() {
         this.props.dispatch(updateFormData(this.props.id));
@@ -53,6 +59,14 @@ class OutputPanel extends Component {
     computeSciText(selectedSci) {
         return selectedSci ? `年份: ${selectedSci.year} IF: ${selectedSci.impact} 分区: ${selectedSci.section}` : '请添加SCI';
     }
+    handleApplicantDropdown(item) {
+        this.setState({ dropdownClickState: true });
+        this.props.dispatch(exportActions.changeApplicantSelection(item));
+    }
+    handleSciDropdown(item) {
+        this.setState({ dropdownClickState: true });
+        this.props.dispatch(exportActions.changeSciSelection(item));
+    }
     render() {
         const props = this.props;
         const { id, sci, selectedApplicant, selectedSci, data, dispatch } = props;
@@ -61,19 +75,26 @@ class OutputPanel extends Component {
         const selectedSciText = this.computeSciText(selectedSci);
         return (
             <Panel>
-                <Grid fluid={true}>
+                <Grid fluid>
                     <Row>
-                        <Col md={6} sm={12} xs={12}>
+                        <Col md={6}>
                             <FormGroup className="form-panel-content">
                                 <ControlLabel className="controllabel-blk">打印申请人</ControlLabel>
-                                <ButtonGroup justify block full vertical>
-                                    <DropdownButton noCaret={true} bsSize="small" className="dropdown-full" title={selectedApplicantText} id="applicantSelector">
+                                <ButtonGroup block full vertical>
+                                    <DropdownButton
+                                      noCaret
+                                      bsSize="small"
+                                      className="dropdown-full"
+                                      title={selectedApplicantText}
+                                      id="applicantSelector"
+                                      onClick={() => this.setState({ dropdownClickState: true })}
+                                    >
                                         {_.castArray(applicants).map((item, index) => (
                                             item ?
                                             <MenuItem
-                                                key={index}
-                                                onClick={() => dispatch(exportActions.changeApplicantSelection(item))}
-                                                >
+                                              key={index}
+                                              onClick={() => this.handleApplicantDropdown(item)}
+                                            >
                                                 {this.computeApplicantText(item)}
                                             </MenuItem> : null
                                         ))}
@@ -85,13 +106,20 @@ class OutputPanel extends Component {
                             <FormGroup className="form-panel-content">
                                 <ControlLabel className="controllabel-blk">选择SCI</ControlLabel>
                                 <ButtonGroup vertical full block>
-                                    <DropdownButton noCaret={true} bsSize="small" className="dropdown-full" title={selectedSciText} id="sciSelector">
+                                    <DropdownButton
+                                      noCaret
+                                      bsSize="small"
+                                      className="dropdown-full"
+                                      title={selectedSciText}
+                                      id="sciSelector"
+                                      onClick={() => this.setState({ dropdownClickState: true })}
+                                    >
                                         {_.castArray(sci).map((item, index) => (
                                             item ?
                                             <MenuItem
-                                                key={index}
-                                                onClick={() => dispatch(exportActions.changeSciSelection(item))}
-                                                >{this.computeSciText(item)}
+                                              key={index}
+                                              onClick={() => this.handleSciDropdown(item)}
+                                            >{this.computeSciText(item)}
                                             </MenuItem> : null
                                         ))}
                                     </DropdownButton>

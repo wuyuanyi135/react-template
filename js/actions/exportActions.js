@@ -1,6 +1,7 @@
 import * as constants from '../constants/AppConstants.js';
 import { addWarningNotification, addDefaultNotification } from '../actions/AppActions.js';
 import { displayDialog, updateFormData } from '../actions/IndexActions.js';
+import * as importActions from '../actions/ImportFormActions.js';
 import reqwest from 'reqwest';
 import _ from 'lodash';
 
@@ -76,7 +77,12 @@ export function exportPrintPage() {
             type: 'json',
             data: JSON.stringify({ refId: data._id })
         });
-        dispatch(updateFormData(data._id));
+        if (data._id) {
+            // if _id exists, update rather than create;
+            dispatch(updateFormData(data._id));
+        } else {
+            dispatch(importActions.submitImportFormAsync());
+        }
         dispatch(displayDialog(false));
         window.open(`/print.html?${queryString}`, '_blank');
     };

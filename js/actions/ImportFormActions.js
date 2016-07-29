@@ -249,7 +249,9 @@ export function submitImportFormAsync(data) {
         let asset = data;
         // validation has been done by ui
         if (!asset) {
-            asset = { data: getState().importForm };
+            console.log('[submitImportFormAsync] data not provided, use importForm data');
+            asset = getState().importForm.data;
+            console.log(asset);
         }
         reqwest({
             type: 'json',
