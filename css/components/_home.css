@@ -1,3 +1,7 @@
+.popup {
+	width: 80%;
+}
+
 .wrapper {
 	background-color: #FEFEFE;
 	color: #222222;
@@ -41,4 +45,8 @@
 	font-weight: 200;
 	text-shadow: 1px 1px 0.5px;
 	text-decoration: underline;
+}
+
+.recent-item :hover {
+	color:grey;
 }

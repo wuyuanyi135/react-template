@@ -19,11 +19,11 @@ class App extends Component {
         var dispatch = this.props.dispatch;
         var notifications = this.props.notifications;
         return (
-            <div>
+            <div >
                 <div className="header">
-                  <AutoAffix container={this} affixClassName="nav-affix">
-                      {this.getNavBar(dispatch)}
-                  </AutoAffix>
+                    <AutoAffix container={this} viewportOffsetTop={0} affixClassName="nav-affix">
+                        {this.getNavBar(dispatch)}
+                    </AutoAffix>
                 </div>
                 <div className="wrapper">
                     { this.props.children }
@@ -48,10 +48,7 @@ class App extends Component {
                     <Nav>
                         <NavItem eventKey={1} onClick={() => dispatch(push('/'))}>索引</NavItem>
                         <NavItem eventKey={2} onClick={() => dispatch(push('/import'))}>录入</NavItem>
-                    </Nav>
-                    <Nav pullRight>
-                        <NavItem eventKey={1} href="#">Link Right</NavItem>
-                        <NavItem eventKey={2} href="#">Link Right</NavItem>
+                        <NavItem eventKey={3} onClick={() => window.open('/print.html','_blank')}>打印模板</NavItem>
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>

@@ -200,13 +200,35 @@ export function updateSci(issn) {
     return dispatch => {
         dispatch(changeIsUpdatingSciTableState(true));
         reqwest({
-            url: `/api/sci/${issn}`,
+            url: `/api/sciserver?action=queryissn&issn=${issn}`,
             method: 'get'
         })
         .then((value) => {
             console.log('Fetched SCI', value);
+            var response;
             try {
-                dispatch(updateSciTable(JSON.parse(value.result)));
+                response = JSON.parse(value.response);
+            } catch (err) {
+                console.error('Can not parse fetched sci data', err);
+                dispatch(actions.addWarningNotification('无法解析返回的SCI数据', 3000));
+                return;
+            }
+            if (response.status !== 'success') {
+                dispatch(actions.addWarningNotification('获取失败 正在重新登陆 请等待登陆成功后再次获取', 3000));
+                reqwest('/api/sciserver?action=login')
+                .then(_value => {
+                    if (_value.status === 'success') {
+                        dispatch(actions.addDefaultNotification('已经重新登陆', 3000));
+                    } else {
+                        dispatch(actions.addDefaultNotification('重新登陆失败', 3000));
+                        console.error('relogin failed', _value);
+                    }
+                });
+                return;
+            }
+
+            try {
+                dispatch(updateSciTable(response.result));
                 dispatch(actions.addDefaultNotification('获取成功', 3000));
             } catch (e) {
                 dispatch(actions.addWarningNotification('获取失败 数据不正确', 3000));
@@ -215,7 +237,7 @@ export function updateSci(issn) {
         })
         .fail((error) => {
             console.log('Failed Fetching SCI', error);
-            dispatch(actions.addWarningNotification('获取失败 连接失败', 3000));
+            dispatch(actions.addWarningNotification('获取失败 连接失败或ISSN不存在', 3000));
         })
         .always(() => dispatch(changeIsUpdatingSciTableState(false)));
     };
@@ -223,14 +245,20 @@ export function updateSci(issn) {
 
 /* submit import form */
 export function submitImportFormAsync(data) {
-    return (dispatch) => {
+    return (dispatch, getState) => {
+        let asset = data;
         // validation has been done by ui
+        if (!asset) {
+            console.log('[submitImportFormAsync] data not provided, use importForm data');
+            asset = getState().importForm.data;
+            console.log(asset);
+        }
         reqwest({
             type: 'json',
             method: 'post',
             url: '/api/import',
             contentType: 'application/json',
-            data: JSON.stringify(data)
+            data: JSON.stringify(asset)
         })
         .then((value) => {
             console.log('Created documents', value);

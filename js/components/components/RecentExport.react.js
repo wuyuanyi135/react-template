@@ -2,20 +2,18 @@ import React, { Component } from 'react';
 import { Glyphicon, Media } from 'react-bootstrap';
 import * as actions from '../../actions/AppActions.js';
 import * as indexActions from '../../actions/IndexActions.js';
-
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-class RecentImport extends Component {
+class RecentExport extends Component {
+
     render() {
-        const props = this.props;
-        const dispatch = props.dispatch;
-        const recentImport = props.recentImport;
+        const { recentExport, dispatch } = this.props;
         return (
             <div>
                 <div>
                     <h2>
-                        <span>最新录入</span>
+                        <span>最近打印</span>
                         <span>
                             <Glyphicon
                                 className="header-refresh-icon"
@@ -26,15 +24,15 @@ class RecentImport extends Component {
                 </div>
 
                 <div>
-                    {_.castArray(recentImport).map((item, index) => {
+                    {_.castArray(recentExport).map((item, index) => {
                         if (!item) {
                             return null;
                         }
                         return (
                             <Media
-                              className="recent-item"
                               key={index}
-                              onClick={() => dispatch(indexActions.displayArticleDialog(item._id))}
+                              onClick={() => dispatch(indexActions.displayArticleDialog(item.refId))}
+                              className="recent-item"
                             >
                                 <Media.Body>
                                     <Media.Heading componentClass="h4">
@@ -47,12 +45,13 @@ class RecentImport extends Component {
                     })}
                 </div>
             </div>
-        ); // return
+        );
     }
 }
 
+
 const select = (state) => ({
-    recentImport: state.home.recentImport
+    recentExport: state.home.recentExport
 });
 
-module.exports = connect(select)(RecentImport);
+module.exports = connect(select)(RecentExport);

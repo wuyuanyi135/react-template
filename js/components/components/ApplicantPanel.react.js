@@ -53,7 +53,7 @@ const ApplicantPanel = (props) => {
     const applicantData = applicant.toArray();
 
     return (
-        <Panel {...panelProps} expanded={true} bsStyle="success" header="申请人信息">
+        <Panel {...panelProps} expanded={true} bsStyle="success">
             <div className="form-panel-content">
                 {applicantData.map((item, index) =>
                     <ApplicantEntry {...item} key={index} index={index} />

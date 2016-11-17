@@ -7,6 +7,7 @@ const LoadButton = connect()((props) => (
     <Button
       block
       bsStyle="info"
+      disabled={!/^\S{4}\-\S{4}/.test(props.issn)}
       onClick={() => props.dispatch(importActions.updateSci(props.issn))}
     >点击更新SCI数据</Button>
 ));
@@ -40,8 +41,8 @@ class LoadProgress extends Component {
     }
 }
 LoadProgress.defaultProps = {
-    expectedDuration: 20000,
-    updateInterval: 2000
+    expectedDuration: 5000,
+    updateInterval: 500
 };
 
 const sciConnect = (state) => ({

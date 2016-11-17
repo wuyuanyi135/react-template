@@ -64,7 +64,10 @@ export function addDefaultNotification(message, timeout) {
         message,
         key: Date.now(),
         className: 'default-notification',
-        dismissAfter: timeout
+        dismissAfter: timeout,
+        barStyle: {
+            zIndex: '99999'
+        }
     });
 }
 export function addWarningNotification(message, timeout) {
@@ -72,13 +75,20 @@ export function addWarningNotification(message, timeout) {
         message,
         key: Date.now(),
         className: 'warning-notification',
-        dismissAfter: timeout,
+        dismissAfter: timeout || 3000,
         barStyle: {
             background: '#ffcc00',
             color: 'black',
-            fontWeight: 'bold'
+            fontWeight: 'bold',
+            zIndex: '99999'
         }
     });
+}
+export function updateRecentExport(recentExport) {
+    return {
+        type: constants.UPDATE_RECENT_EXPORT,
+        recentExport
+    };
 }
 
 export function updateRecentImport(newList) {
@@ -90,8 +100,24 @@ export function updateRecentImport(newList) {
 
 export function fetchRecent(showNotification = true) {
     return dispatch => {
+        const count = 5;
         reqwest({
-            url: '/api/service/entry?$limit=3&$sort[createdAt]=-1',
+            url: `/api/service/history?$limit=${count}&$sort[createdAt]=-1`,
+            method: 'get',
+        })
+        .then(value => {
+            if (showNotification) {
+                dispatch(addDefaultNotification('最近打印 列表已更新', 3000));
+            }
+            dispatch(updateRecentExport(value));
+        })
+        .fail(err => {
+            dispatch(addWarningNotification('最近打印列表更新失败', 3000));
+            console.error(err);
+        });
+
+        reqwest({
+            url: `/api/service/entry?$limit=${count}&$sort[createdAt]=-1`,
             method: 'get'
         })
         .then(value => {

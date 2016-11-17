@@ -20,7 +20,10 @@ import _ from 'lodash';
 const initialState = {
     notifications: new OrderedSet(),
     recentImport: [],
-    displayDialog: false
+    recentExport: [],
+    displayDialog: false,
+    displayApplicantDialog: false,
+    applicantDialogWho: ""
 };
 
 function homeReducer(state = initialState, action) {
@@ -40,13 +43,23 @@ function homeReducer(state = initialState, action) {
         return _.assign({}, state, {
             recentImport: action.recentImport
         });
-
+    case constants.UPDATE_RECENT_EXPORT:
+        return _.assign({}, state, {
+            recentExport: action.recentExport
+        });
     // Dialog
     case constants.DISPLAY_DIALOG:
         return _.assign({}, state, {
             displayDialog: action.display
         });
-
+    case constants.DISPLAY_APPLICANT_DIALOG:
+        return _.assign({}, state, {
+            displayApplicantDialog: action.state
+        });
+    case constants.CHANGE_APPLICANT_DIALOG_WHO:
+        return _.assign({}, state, {
+            applicantDialogWho: action.applicantName
+        });
     default:
         return state;
     }

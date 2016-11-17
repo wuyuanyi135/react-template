@@ -34,22 +34,19 @@ class ArticleInfoPanel extends Component {
     validatePTSelection() {
         return this.props.selectedPublicationTypes ? 'success' : 'error';
     }
-    validateIssn() {
-        return this.props.selectedISSN ? 'success' : 'error';
-    }
     validatePanel() {
         return _.every([
             this.validateTitle(),
             this.validateSource(),
             this.validatePTSelection(),
-            this.validateIssn()
+            // this.validateIssn()
         ],
         (item) => item === 'success')
         ? 'success' : 'warning';
     }
     render() {
         const props = this.props;
-        const { dispatch, source, issn, selectedISSN, selectedPublicationTypes, articleTitle, pt, ...panelProps } = props;
+        const { dispatch, source, pt, articleTitle, selectedPublicationTypes, ...panelProps } = props;
         const selectedPT = selectedPublicationTypes;
         const validation = this.validatePanel();
 
@@ -60,7 +57,6 @@ class ArticleInfoPanel extends Component {
               onMouseLeave={() => this.setState({ expanded: false })}
               expanded={this.state.expanded || this.props.alwaysOn || validation === 'warning'}
               bsStyle={validation}
-              header="文献信息"
               className="author-panel form-panel"
             >
                 <div className="form-panel-content">
@@ -110,41 +106,6 @@ class ArticleInfoPanel extends Component {
                             <Button active={selectedPT == '信函'} onClick={e => handlePTButtonClick(e, dispatch)}>信函</Button>
                             <Button active={selectedPT == '病例报道'} onClick={e => handlePTButtonClick(e, dispatch)}>病例报道</Button>
                         </ButtonGroup>
-                    </FormGroup>
-                    {
-                        issn.length ?
-                        <FormGroup>
-                            <ControlLabel>ISSN 列表 (PubMed)</ControlLabel>
-                            <ListGroup>
-                                {
-                                    issn.map((item, index) => (
-                                        <ListGroupItem
-                                          header={item.issnType}
-                                          key={index}
-                                          onClick={e => dispatch(actions.changeISSNSelection(item.issn))}
-                                        >
-                                            {item.issn}
-                                        </ListGroupItem>
-                                    ))
-                                }
-                            </ListGroup>
-                        </FormGroup>
-                        : null
-                    }
-                    <FormGroup validationState={selectedISSN ? 'success' : 'error'}>
-                        <ControlLabel>ISSN 选择</ControlLabel>
-                        <FormControl
-                          type="text"
-                          value={selectedISSN}
-                          placeholder="selectedISSN"
-                          onChange={e => dispatch(actions.changeISSNSelection(e.target.value))}
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <ControlLabel>分区/SCI</ControlLabel>
-
-                        <SciTable />
-
                     </FormGroup>
                 </div>
             </Panel>
