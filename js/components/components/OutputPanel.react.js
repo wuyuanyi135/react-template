@@ -16,7 +16,9 @@ import {
     FormGroup,
     Panel,
     MenuItem,
-    DropdownButton
+    DropdownButton,
+	Popover,
+	OverlayTrigger
 } from 'react-bootstrap';
 
 class OutputPanel extends Component {
@@ -31,9 +33,11 @@ class OutputPanel extends Component {
         this.props.dispatch(
             exportActions.changeApplicantSelection(_.last(this.props.applicants.toArray()))
         );
-        this.props.dispatch(
-            exportActions.changeSciSelection(this.props.sci[0])
-        );
+		//console.log(this.props.sci);
+        //this.props.dispatch(
+        //    exportActions.changeSciSelection(this.props.selectedSci)
+		//	exportActions.changeSciSelection(null)
+        //);
     }
     componentWillReceiveProps(nextProps) {
         // select the first data as default
@@ -43,8 +47,9 @@ class OutputPanel extends Component {
             this.props.dispatch(
                 exportActions.changeApplicantSelection(_.last(nextProps.applicants.toArray()))
             );
-            this.props.dispatch(
-                exportActions.changeSciSelection(nextProps.sci[0])
+			this.props.dispatch(
+                //exportActions.changeSciSelection(nextProps.sci[0])
+				exportActions.changeSciSelection(null)
             );
         }
     }
@@ -56,7 +61,13 @@ class OutputPanel extends Component {
     computeApplicantText(selectedApplicant) {
         return selectedApplicant ? `姓名: ${selectedApplicant.applicant} 科室: ${selectedApplicant.department}` : '请添加申请人';
     }
-    computeSciText(selectedSci) {
+    computeSciText(selectedSci, scilist) {
+		if (scilist) {
+			scilist = _.castArray(scilist);
+			if (!_.includes(scilist, selectedSci)) {
+				return '影响因子';
+			}
+		}
         return selectedSci ? `年份: ${selectedSci.year} IF: ${selectedSci.impact} 分区: ${selectedSci.section}` : '请添加SCI';
     }
     handleApplicantDropdown(item) {
@@ -67,12 +78,19 @@ class OutputPanel extends Component {
         this.setState({ dropdownClickState: true });
         this.props.dispatch(exportActions.changeSciSelection(item));
     }
+	popOverHandler() {
+		return (
+			<Popover id="popover-trigger-hover-focus" title="出处">
+				{this.props.data.source}
+			</Popover>
+		);
+	}
     render() {
         const props = this.props;
         const { id, sci, selectedApplicant, selectedSci, data, dispatch } = props;
         const applicants = props.applicants.toArray();
         const selectedApplicantText = this.computeApplicantText(selectedApplicant);
-        const selectedSciText = this.computeSciText(selectedSci);
+        const selectedSciText = this.computeSciText(selectedSci,sci);
         return (
             <Panel>
                 <Grid fluid>
@@ -103,27 +121,30 @@ class OutputPanel extends Component {
                             </FormGroup>
                         </Col>
                         <Col md={6}>
-                            <FormGroup className="form-panel-content">
+                            <FormGroup className="form-panel-content" validationState={selectedSci ? 'success' : 'error'}>
                                 <ControlLabel className="controllabel-blk">选择SCI</ControlLabel>
-                                <ButtonGroup vertical full block>
-                                    <DropdownButton
-                                      noCaret
-                                      bsSize="small"
-                                      className="dropdown-full"
-                                      title={selectedSciText}
-                                      id="sciSelector"
-                                      onClick={() => this.setState({ dropdownClickState: true })}
-                                    >
-                                        {_.castArray(sci).map((item, index) => (
-                                            item ?
-                                            <MenuItem
-                                              key={index}
-                                              onClick={() => this.handleSciDropdown(item)}
-                                            >{this.computeSciText(item)}
-                                            </MenuItem> : null
-                                        ))}
-                                    </DropdownButton>
-                                </ButtonGroup>
+								<OverlayTrigger trigger="hover" placement="top" overlay={this.popOverHandler()}>
+									<ButtonGroup vertical full block>
+										<DropdownButton
+										  noCaret
+										  bsSize="small"
+										  style={{color: selectedSci? null : 'red'}}
+										  className="dropdown-full"
+										  title={selectedSciText}
+										  id="sciSelector"
+										  onClick={() => this.setState({ dropdownClickState: true })}
+										>
+											{_.castArray(sci).map((item, index) => (
+												item ?
+												<MenuItem
+												  key={index}
+												  onClick={() => this.handleSciDropdown(item)}
+												>{this.computeSciText(item, sci)}
+												</MenuItem> : null
+											))}
+										</DropdownButton>
+									</ButtonGroup>
+								</OverlayTrigger>
                             </FormGroup>
                         </Col>
                     </Row>
@@ -133,7 +154,7 @@ class OutputPanel extends Component {
                     <ButtonGroup block vertical>
                         {id ? <Button bsStyle="info" onClick={() => this.updateButtonHandler()}>保存变更</Button> : <ImportButton data={data} />}
                         {id ? <Button bsStyle="danger" onClick={() => dispatch(exportActions.deleteEntry(id))}>删除此条目</Button> : null}
-                        <Button onClick={() => dispatch(exportActions.exportPrintPage())}>打印并保存</Button>
+                        <Button disabled={!selectedSci} onClick={() => dispatch(exportActions.exportPrintPage())}>打印并保存</Button>
                     </ButtonGroup>
 
                 </FormGroup>
